@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>hello.html</title>
+	</head>
+	<body>
+		helloworld
+	<form th:action="@{/helloprint}" th:object="${helloPrintForm}" method="post">
+	名前を入力してください：
+	 <input type="text" th:field="*{name}" /><br />
+	 <input type="submit" value="送信する" />
+	 </form>
+	 </body>
+ </html>

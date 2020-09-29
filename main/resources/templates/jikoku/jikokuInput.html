@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <title>時間・内容登録</title>
+  </head>
+  <body>
+   <div align="center">
+    <form th:action="@{/jikokuresult}" th:object="${jikokuForm}" method="post">
+      <strong>作業日付：</strong>
+      <input type="text" th:field="*{working_date}" /><br>
+      <strong>作業時間：</strong>
+      <input type="text" th:field="*{working_start_time}" />
+      <input type="text" th:field="*{working_end_time}" /><br>
+      <strong>作業内容：</strong>
+      <input type="text" th:field="*{working_contents}" /><br>
+      <br>    
+      <input type="submit" value="登録" />
+    </form>
+    </div>
+  </body>
+</html>

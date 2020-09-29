@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<style type="text/css">
+	<!--
+		input[type="button"]{
+			width:40%;
+			padding:10px;
+			font-size:30px;
+		}
+	-->
+	</style>
+	<title>ログアウト画面</title>
+</head>
+<body>
+	<div style="margin-left:40%;margin-right:0%;">
+			<br><br><br><br><br><br><br><br><br><br>
+<!--
+ 			<p class="id" th:text="${LoginForm.userName}+'さんはログアウトしました。'"></p>
+ -->
+ 			<p class="id" th:text="'aaさんはログアウトしました。'"></p>
+ 			<form th:action="@{/login}" >
+				<br><br><br><br><br>
+<!-- 				<input type="button" onclick="location.href='../ログイン画面/login.html'" value="ログイン画面へ戻る" />
+ -->				<input type="submit"  value="ログイン画面へ戻る" />
+			</form>
+	</div>
+</body>
+</html>

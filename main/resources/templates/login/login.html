@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8">
+		<link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" />
+		<title>ログイン画面</title>
+		<style>
+        body {
+/* 
+            background-color: #00ff00
+ */
+        }
+ 
+        .container {
+/*             width: 90%; */
+            text-align: center;
+            align:center;
+            margin: 0px auto;
+
+        }
+ 
+/*         .first-sentence {
+            font-weight: bold;
+        } */
+ 	   </style>
+	</head>
+	<body align="center" height="1980px">
+		<div class="container">
+			<form th:action="@{/login}" th:object="${loginForm}" method="post">
+				<table border=0 align="center" margin="auto">
+					<tr>
+						<td>ID</td>
+						<td>:</td>
+						<td>
+	 					 	<input type="text" th:field="*{id}" />						</td>
+					</tr>
+					<tr></tr>
+					<tr>
+						<td>パスワード</td>
+						<td>:</td>
+						<td>
+					 		<input type="password" th:field="*{pw}" /><br />
+					 	</td>
+					</tr>
+				</table>
+				<br />
+				<input type="submit" name="jdg" value="ログイン" />
+				<div th:if="${#fields.hasErrors('all')}">
+	 				<p th:errors="*{all}" class="error-message">error！</p>
+ 				</div>
+			</form>
+		</div>
+		<div  th:if="${loginForm.loginFlg eq 1}">
+			<p class="error-message">ログインIDが存在しません。</p>	
+		</div>
+		<div  th:if="${loginForm.loginFlg eq 2}">
+			<p class="error-message">パスワードが違います。</p>	
+		</div>
+	</body>
+</html>

@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <title>時間・内容登録確認</title>
+  </head>
+  <body>
+    <h1>入力内容</h1>
+    <div th:object="${jikokuForm}">
+      <strong>作業時間：</strong><span th:text="*{}"></span><br>
+      <strong>作業内容：</strong><span th:text="*{}"></span><br>
+       
+    </div>
+  </body>
+</html>

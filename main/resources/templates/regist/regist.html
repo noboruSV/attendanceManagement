@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8" />
+<title>作業日報登録画面</title>
+</head>
+<body>
+<div align="center">
+<form th:action="@{/registcomp}" th:object="${registPrintForm}" method="post">
+作業日付：<input type="text" th:field="*{working_date}" /><br /><br>
+作業開始時間：<input type="text" th:field="*{working_start_time}" /><br /><br>
+作業終了時間：<input type="text" th:field="*{working_end_time}" /><br /><br>
+作業内容：<input type="text" th:field="*{working_contents}" /><br /><br>
+庶務・その他：<input type="text" th:field="*{working_sonota}" /><br /><br>
+所感：<input type="text" th:field="*{syokan}" /><br /><br>
+<input type="submit" value="登録する" />
+</form>
+</div>
+</body>
+</html>

@@ -1,0 +1,23 @@
+<!-- menu.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8">
+		<link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" />
+		<title>メニュー画面</title>
+	</head>
+	<body>
+	<!-- <form th:action="@{/menu}" method="post">
+	 -->
+	 	<div class="container" align="center">
+			<form th:action="@{/menu}" th:object="${loginForm}"method="post">
+			<!-- <form th:action="@{/menu}" th:object="${loginForm}"method="get"> -->
+				<input type="hidden" th:field="*{id}" /></td>
+				<input type="hidden" th:field="*{userName}" /><br />
+				<input type="submit" th:name="jikoku" value="日報登録" />
+				<input type="submit"  th:name="workReportList" value="日報一覧" />
+				<input type="submit"  th:name="logout" value="ログアウト" />
+			</form>
+	 	</div>
+	</body>
+</html>
