@@ -12,7 +12,7 @@
 	 	<div class="container" align="center">
 			<form th:action="@{/menu}" th:object="${loginForm}"method="post">
 			<!-- <form th:action="@{/menu}" th:object="${loginForm}"method="get"> -->
-				<input type="hidden" th:field="*{id}" /></td>
+				<input type="hidden" th:field="*{id}" />
 				<input type="hidden" th:field="*{userName}" /><br />
 				<input type="submit" th:name="jikoku" value="日報登録" />
 				<input type="submit"  th:name="workReportList" value="日報一覧" />

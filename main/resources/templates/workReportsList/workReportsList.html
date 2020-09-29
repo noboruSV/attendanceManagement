@@ -23,31 +23,31 @@
 				</tr>
 				<tr th:each="listResult : *{dailyReportResult}">
 					<td >
-						<input type="text" th:value="${listResult.year}"  disabled="true"/>
+						<input type="text" th:value="${listResult.year}"  readonly/>
 					</td>
 					<td>
-						<input type="text" th:value="${listResult.date}" disabled="true" />
+						<input type="text" th:value="${listResult.date}" readonly />
 					</td>
 					<td>
-						<input type="text" th:value="${listResult.week}" disabled="true" />
+						<input type="text" th:value="${listResult.week}" readonly />
 					</td>
 					<td>
-						<input type="text"  th:value="${listResult.workingContents}" disabled="true" />
+						<input type="text"  th:value="${listResult.workingContents}" readonly />
 					</td>
 					<td>
-						<input type="text"  th:value="${listResult.workingStartTime}"  />
+						<input type="text"  th:value="${listResult.workingStartTime}"  readonly/>
  					</td>
 					<td>
-						<input type="text"  th:value="${listResult.workingEndTime}"  />
+						<input type="text"  th:value="${listResult.workingEndTime}"  readonly/>
 					</td>
 					<td>
-						<input type="text" th:value="${listResult.dutyTime}"  disabled="true" />
+						<input type="text" th:value="${listResult.dutyTime}"  readonly />
 					</td>
 					<td>
-						<input type="text" th:value="${listResult.breakTime}" disabled="true"  />
+						<input type="text" th:value="${listResult.breakTime}" readonly  />
 					</td>
 					<td>
-						<input type="text" th:value="${listResult.workTime}"  disabled="true"/>
+						<input type="text" th:value="${listResult.workTime}"  readonly/>
 					</td>
 				</tr>
 			</table>
