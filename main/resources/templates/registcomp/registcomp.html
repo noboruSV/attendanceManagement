@@ -7,13 +7,15 @@
 <body>
 <div align="center">
 以下の内容を登録しました。<br><br><br>
-作業日時：<span th:text="${registPrintForm.working_date}">デフォルト</span><br><br>
-作業開始時間：<span th:text="${registPrintForm.working_start_time}">デフォルト</span><br><br>
-作業終了時間：<span th:text="${registPrintForm.working_end_time}">デフォルト</span><br><br>
-作業内容：<span th:text="${registPrintForm.working_contents}">デフォルト</span><br><br>
-庶務・その他：<span th:text="${registPrintForm.working_sonota}">デフォルト</span><br><br>
-所感：<span th:text="${registPrintForm.syokan}">デフォルト</span><br /><br>
+作業日時：<span th:text="${registForm.working_date}">デフォルト</span><br><br>
+作業開始時間：<span th:text="${registForm.working_start_time}">デフォルト</span><br><br>
+作業終了時間：<span th:text="${registForm.working_end_time}">デフォルト</span><br><br>
+作業内容：<span th:text="${registForm.working_contents}">デフォルト</span><br><br>
+庶務・その他：<span th:text="${registForm.working_sonota}">デフォルト</span><br><br>
+所感：<span th:text="${registForm.syokan}">デフォルト</span><br /><br>
+<form th:action="@{menu.html}" method="post">
 <input type="submit" value="メニューへ戻る" />
+</form>
 </div>
 </body>
 </html>
