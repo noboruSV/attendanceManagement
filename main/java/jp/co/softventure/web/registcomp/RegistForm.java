@@ -1,6 +1,6 @@
 package com.example.web;
 
-public class RegistPrintForm {
+public class RegistForm {
 
 	private String working_date;
 	private String working_start_time;
