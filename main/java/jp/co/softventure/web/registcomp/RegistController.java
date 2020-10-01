@@ -7,15 +7,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class RegistController {
 	@ModelAttribute
-	public RegistPrintForm setForm() {
-		return new RegistPrintForm();
+	public RegistForm setForm() {
+		return new RegistForm();
 	}
 	@RequestMapping("/regist")
 	public String regist() {
 		return "regist";
 	}
 	@RequestMapping("/registcomp")
-	public String helloprint(RegistPrintForm form) {
+	public String (RegistForm form) {
 		return "registcomp";
 	}
 }
