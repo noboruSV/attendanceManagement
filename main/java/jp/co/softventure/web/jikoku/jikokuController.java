@@ -12,6 +12,7 @@ public class jikokuController {
         return new jikokuForm();
     }
 
+	//“o˜^‰æ–Ê‘JˆÚ
     @RequestMapping("/jikokuinput")
     public String input() {
         return "jikoku/jikokuInput";
