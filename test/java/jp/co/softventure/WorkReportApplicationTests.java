@@ -8,6 +8,7 @@ class WorkReportApplicationTests {
 
 	@Test
 	void contextLoads() {
+		
 	}
 
 }
