@@ -11,11 +11,11 @@ public class RegistrationForm {
 	private String workingTime;
 	
 	@NotEmpty(message = "※数値を入力してください。")
-	@Pattern(regexp = "^((0[1-9]|1[0-9]|2[0-3]):[0-5][0-9])$", message = "※無効な値です。") 
+	@Pattern(regexp = "^(([01][0-9]|2[0-3]):[0-5][0-9])$", message = "※無効な値です。") 
 	private String workingStartTime;
 	
 	@NotEmpty(message = "数値を入力してください。")
-	@Pattern(regexp = "^((0[1-9]|1[0-9]|2[0-3]):[0-5][0-9])$", message = "※無効な値です。") 
+	@Pattern(regexp = "^(([01][0-9]|2[0-3]):[0-5][0-9])$", message = "※無効な値です。") 
 	private String workingEndTime;
 	
 	@Size(min = 1, max = 300, message = "※1～300字で入力してください。")
