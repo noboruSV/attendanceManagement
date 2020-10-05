@@ -49,15 +49,7 @@ public class LoginController {
 		return "login/login";
 
 	}
-//	@RequestMapping(value="/login", params="jdg")
-//	public ModelAndView toMenu(ModelAndView mav) {
-//		MenuForm menuForm = new MenuForm();
-//		menuForm.setId("3456");
-//		menuForm.setUserName("noboru");
-//		mav.addObject("menuForm2", menuForm);
-//        mav.setViewName("menu/menu");
-//        return mav;
-//	}
+
 	
 	@RequestMapping(value="/login", params="jdg")
 	public String loginFailed(
