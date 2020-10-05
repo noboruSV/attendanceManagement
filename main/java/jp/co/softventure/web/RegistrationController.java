@@ -79,8 +79,8 @@ public class RegistrationController {
 			} 
 		//バリデーションチェック時にエラーがあれば、エラーメッセージを表示して再度登録画面へ
 		} else {
-				mav.addObject("errmsg","登録に失敗しました。");
-				mav.setViewName("/registration");
+			mav.addObject("errmsg","登録に失敗しました。");
+			mav.setViewName("/registration");
 		}
 		return mav;
 	}
