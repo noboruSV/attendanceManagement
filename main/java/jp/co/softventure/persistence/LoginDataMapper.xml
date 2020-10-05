@@ -26,6 +26,17 @@
 <!-- 		ORDER BY id
  -->
  	</select>
+ 	
+ 	<!-- logoutページ用処理 -->
+ 	<resultMap id = "getLoginData" type = "jp.co.softventure.domain.LoginData">
+		<result property = "userName" column = "user_name"/>
+		<result property = "id" column = "id"/>
+	</resultMap>
+	
+	<select id= "selectUserName" resultMap = "getLoginData">
+		SELECT user_name FROM login_data WHERE id = #{id}
+	</select>
+	
 	
 	<!-- resultMapタグを追記
 	<resultMap id="getResultProductInfo" type="jp.co.softventure.domain.ProductInfo">

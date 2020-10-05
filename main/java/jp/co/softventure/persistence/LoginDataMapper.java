@@ -11,4 +11,6 @@ public interface LoginDataMapper {
 
 	public List<LoginData> select(SearchLoginData searchLoginData);
 	
+	//ログアウトページ用メソッド
+	public List<LoginData> selectUserName(LoginData loginData);
 }
