@@ -29,4 +29,11 @@ public class DBLoginDataService {
 			List<LoginData> list = mapper.select(searchLoginData);
 			return list;
 		}
+	
+	//ログアウトページ用メソッド
+	public List<LoginData> selectUserName(LoginData loginData) {
+		List<LoginData> list = mapper.selectUserName(loginData);
+		return list;
+	}
+	
 }
