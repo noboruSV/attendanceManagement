@@ -15,7 +15,7 @@ public class RegistController {
 		return "regist";
 	}
 	@RequestMapping("/registcomp")
-	public String (RegistForm form) {
+	public String registcomp(RegistForm registForm) {
 		return "registcomp";
 	}
 }
