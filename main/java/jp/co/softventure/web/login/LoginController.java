@@ -17,12 +17,16 @@ import jp.co.softventure.domain.SearchLoginData;
 import jp.co.softventure.service.DBLoginDataService;
 import jp.co.softventure.web.db.SearchLoginDataForm;
 import jp.co.softventure.web.menu.MenuForm;
+import jp.co.softventure.bean.SessionBean;
 
 @Controller
 public class LoginController {
 	
 	@Autowired
 	private DBLoginDataService service;
+
+	@Autowired
+	protected SessionBean sessionBean;
 	
 	@ModelAttribute(value = "searchLoginDataForm")
 	public SearchLoginDataForm setForm() {
@@ -65,6 +69,7 @@ public class LoginController {
 		}
 		
 		loginForm.setLoginFlg((short)0);
+		sessionBean.setId(loginForm.getId());
 		
 		//loginを取得する
 		// データ検索に利用するドメインクラスのインスタンス化
