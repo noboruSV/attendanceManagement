@@ -4,36 +4,47 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import jp.co.softventure.domain.LoginData;
-import jp.co.softventure.domain.SearchLoginData;
 import jp.co.softventure.persistence.LoginDataMapper;
 
+/**
+ * 
+ * @author n.matsu
+ * 2020/09/29 新規作成
+ * 
+ */
 @Service
 public class DBLoginDataService {
 	
 	@Autowired
 	private LoginDataMapper mapper;
 	
-	// データ登録処理メソッド
-		@Transactional
-		public void insertLoginData(LoginData loginData) {
-			// データ登録
-			mapper.insert(loginData);
-		}
+//	//登録処理
+//	@Transactional
+//	public void insert(LoginData loginData) {
+//		// データ登録
+//		mapper.insert(loginData);
+//	}
 		
-		// データ検索処理メソッド
-		public List<LoginData> searchLoginData(SearchLoginData searchLoginData) {
-			// データ検索
-			List<LoginData> list = mapper.select(searchLoginData);
-			return list;
-		}
+	//検索処理
+	public List<LoginData> selectLoginData(LoginData loginData) {
+		List<LoginData> list = mapper.select(loginData);
+		return list;
+	}
 	
+	//更新処理
+//	@Transactional
+//	public void update(LoginData loginData) {
+//		// データ登録
+//		mapper.update(loginData);
+//	}
+	
+	// add mtk start
 	//ログアウトページ用メソッド
 	public List<LoginData> selectUserName(LoginData loginData) {
 		List<LoginData> list = mapper.selectUserName(loginData);
 		return list;
 	}
+	//add mtk end
 	
 }

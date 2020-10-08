@@ -1,5 +1,11 @@
 package jp.co.softventure.domain;
 
+/**
+ * 
+ * @author n.matsu
+ * 2020/09/29 êVãKçÏê¨
+ * 
+ */
 public class LoginData {
 	private String id;
 	private String password;
@@ -13,19 +19,20 @@ public class LoginData {
 		this.id = id;
 	}
 	
-	public String getPw() {
+	public String getPassword() {
 		return password;
 	}
-	
-	public void setPw(String pw) {
-		this.password = pw;
+
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 	public String getUserName() {
 		return userName;
 	}
-	
-	public void setUserName(String uName) {
-		this.userName = uName;
+
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
+	
 }

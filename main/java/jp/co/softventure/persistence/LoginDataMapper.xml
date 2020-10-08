@@ -4,27 +4,14 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="jp.co.softventure.persistence.LoginDataMapper">
-	
-	<insert id="insert">
-		INSERT INTO login_data(id, password, user_name)
-		VALUES (#{id}, #{password}, #{user_name})
-	</insert>
-	
+
 	<select id="select" resultType="jp.co.softventure.domain.LoginData">
-		<!-- <bind name="pNameLike" value="'%' + searchProductName + '%'"/>
-		 -->
 		 SELECT * FROM login_data
 		<where>
 			<if test="id != ''">
 				id = #{id}
 			</if>
-<!-- 			<if test="searchProductName != ''">
-				AND product_name LIKE #{pNameLike}
-			</if>
- -->
 		</where>
-<!-- 		ORDER BY id
- -->
  	</select>
  	
  	<!-- logoutページ用処理 -->
@@ -36,22 +23,5 @@
 	<select id= "selectUserName" resultMap = "getLoginData">
 		SELECT user_name FROM login_data WHERE id = #{id}
 	</select>
-	
-	
-	<!-- resultMapタグを追記
-	<resultMap id="getResultProductInfo" type="jp.co.softventure.domain.ProductInfo">
-		<result property="productNo" column="product_number" />
-	</resultMap>
-	<select id="select" resultType="jp.co.softventure.domain.ProductInfo">
-	resultType属性をresultMap属性に変更し、値には、resultMapタグのid属性を指定
-	<select id="select" resultMap="getResultProductInfo">
-		<bind name="pNameLike" value="'%' + searchProductName + '%'"/>
-		SELECT
-			id
-			, product_no AS product_number
-			, product_name
-			, price
-		FROM product_info
-	</select>-->
-	
+
 </mapper>
