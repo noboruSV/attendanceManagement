@@ -1,0 +1,15 @@
+<!DOCTYPE html> 
+<html xmlns:th="http://www.thymeleaf.org"> 
+  <head> 
+    <meta charset="UTF-8" /> 
+    <title>日報登録完了</title> 
+  </head> 
+  <body> 
+    <h1>日報登録完了</h1> 
+    <p>日報の登録が完了しました。</p> 
+ 
+    <form th:action="@{/registration2}" method="post"> 
+      <input type="submit" name="menu" value="メニューへ戻る" /> 
+    </form> 
+  </body> 
+</html> 

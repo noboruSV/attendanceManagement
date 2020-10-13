@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" />
+    <title>日報情報登録</title>
+  </head>
+  <body>
+    <h1>日報情報登録</h1>
+    <p>登録する情報を入力してください。</p>
+
+    <form th:action="@{/registration2Conf}" th:object="${registrationForm}" method="post">
+<!--       <p th:errors="*{all}" class="error-message">error！</p>-->
+      <table>
+        <tr>
+          <td>作業日付</td>
+<!--    <td><input type="text" th:field="*{working_date}" maxlength="" th:errorclass="error-input" /></td> -->
+        <td><input type="date" th:field="*{workingDate}"   /></td>
+        </tr>
+        <tr>
+          <td>始業時間</td>
+          <!-- <td><input type="text" th:field="*{working_start_time}" maxlength="5" th:errorclass="error-input" /></td>
+         -->
+         <td><input type="time" th:field="*{workingStartTime}"  /></td>
+         </tr>
+        <tr>
+          <td>終業時間</td>
+          <!-- <td><input type="text" th:field="*{working_end_time}" maxlength="5" th:errorclass="error-input" /></td> -->
+        <td><input type="time" th:field="*{workingEndTime}" /></td>
+        </tr>
+         <tr>
+          <td>作業内容</td>
+          <!-- <td><input type="text" th:field="*{working_contents}" maxlength="300" th:errorclass="error-input" /></td> -->
+          <td><input type="text" th:field="*{workingContents}" /></td>
+        </tr>
+      </table>
+
+      <input type="submit" value="確認" />
+    </form>
+  </body>
+</html>

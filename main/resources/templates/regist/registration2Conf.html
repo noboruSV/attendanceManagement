@@ -1,0 +1,47 @@
+<!DOCTYPE html> 
+<html xmlns:th="http://www.thymeleaf.org"> 
+  <head> 
+    <meta charset="UTF-8" /> 
+    <title>日報登録確認</title> 
+  </head> 
+  <body> 
+    <h1>日報登録確認</h1> 
+    <p>登録した日報の内容を確認してください。</p> 
+ 
+    <form th:action="@{/registration2End}" th:object="${registrationForm}" method="post"> 
+     <table> 
+        <tr> 
+          <td>登録日</td> 
+          <td> 
+            <span th:text="*{workingDate}"></span> 
+            <input type="hidden" th:field="*{workingDate}" /> 
+          </td> 
+        </tr> 
+        <tr> 
+          <td>始業時間</td> 
+          <td> 
+            <span th:text="*{workingStartTime}"></span> 
+            <input type="hidden" th:field="*{workingStartTime}" /> 
+          </td> 
+        </tr> 
+        <tr> 
+          <td>終業時間</td> 
+          <td> 
+            <span th:text="*{workingEndTime}"></span> 
+            <input type="hidden" th:field="*{workingEndTime}" /> 
+          </td> 
+        </tr> 
+        <tr> 
+          <td>作業内容</td> 
+          <td> 
+            <span th:text="*{workingContents}"></span> 
+            <input type="hidden" th:field="*{workingContents}" /> 
+          </td> 
+        </tr> 
+      </table> 
+ 
+      <input type="submit" name="back_btn" value="戻る" /> 
+      <input type="submit" name="insert_btn" value="登録" /> 
+    </form> 
+  </body> 
+</html> 
