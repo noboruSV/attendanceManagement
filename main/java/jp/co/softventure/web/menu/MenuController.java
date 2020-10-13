@@ -28,13 +28,19 @@ public class MenuController {
 	public LoginData dispUserName() {
 		return new LoginData();
 	}
+	@RequestMapping(value = "/menu", params = "registration2")
+	public String toRegistration2() {
+		return "redirect:/registration2";
+	}
+	
 	
 	@RequestMapping(value = "/menu", params = "registration")
 	public String toRegistrationPage() {
 		return "redirect:/registration";
 	}
 	
-	@RequestMapping(value = "/menu", params = "workReportsList")
+	
+	@RequestMapping(value ="/menu", params = "workReportsList")
 	public String toWorkReportList() {
 		return "redirect:/workReportsList";
 	}
