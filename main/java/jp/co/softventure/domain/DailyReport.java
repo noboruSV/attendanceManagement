@@ -1,6 +1,7 @@
 package jp.co.softventure.domain;
 
 public class DailyReport {
+
 	//ID
 	private String id;
 	//作業日時
@@ -11,12 +12,16 @@ public class DailyReport {
 	private String workingStartTime;
 	//退勤時間
 	private String workingEndTime;
-	//庶務・所感
+	//庶務・その他
 	private String shomuSonota;
 	//所感
 	private String shokan;
 	//作業内容
 	private String workingContents;
+	//データ取得日付
+	private String working_date_s;
+	//データ取得日付
+	private String working_date_e;
 
 	public String getId() {
 		return id;
@@ -66,4 +71,17 @@ public class DailyReport {
 	public void setWorkingEndTime(String workingEndTime) {
 		this.workingEndTime = workingEndTime;
 	}
+	public String getWorking_date_s() {
+		return working_date_s;
+	}
+	public void setWorking_date_s(String working_date_s) {
+		this.working_date_s = working_date_s;
+	}
+	public String getWorking_date_e() {
+		return working_date_e;
+	}
+	public void setWorking_date_e(String working_date_e) {
+		this.working_date_e = working_date_e;
+	}
+	
 }

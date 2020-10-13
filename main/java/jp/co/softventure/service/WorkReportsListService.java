@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.BeanUtils;
@@ -14,7 +15,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import jp.co.softventure.domain.DailyReport;
-import jp.co.softventure.web.workReportsList.WorkReportsListDto;
+import jp.co.softventure.domain.UpdateDailyReport;
+import jp.co.softventure.domain.WorkingReport;
+import jp.co.softventure.domain.dto.DailyReportDto;
+import jp.co.softventure.domain.dto.WorkReportsListDto;
+import jp.co.softventure.model.LoginDataInfo;
+import jp.co.softventure.persistence.DailyReportMapper;
+import jp.co.softventure.persistence.WorkingReportMapper;
+import jp.co.softventure.web.RegistrationForm;
 import jp.co.softventure.web.workReportsList.WorkReportsListForm;
 
 
@@ -24,25 +32,90 @@ public class WorkReportsListService {
 	@Autowired
 	private DBDailyReportService dBDailyReportService;
 	
+	@Autowired
+	WorkingReportMapper mapper ;
 	
-	/***
+	@Autowired
+	DailyReportMapper dailyReportMapper;
+	
+	@Autowired
+	MonthlyReportOutputService monthlyReportOutputService;
+	
+	/**
+	 * 	 * 更新処理
+	 * daily_reportDBにIDと日付が存在する場合、更新する
+	 * @param registrationForm
+	 */
+	public void updateDailyReport(RegistrationForm registrationForm) {
+		
+		//IDと日付からdaily_reportDBを取得
+		DailyReport dailyReport = new DailyReport();
+		dailyReport.setId(registrationForm.getId());
+		dailyReport.setWorkingDate(registrationForm.getWorkingDate());
+		
+		List<DailyReport> list = dailyReportMapper.selectIdDate(dailyReport);
+		
+		//取得できた場合、更新処理を進める
+		if (list != null && list.size() != 0) {
+			updateDB(registrationForm);
+		}
+		
+		
+	}
+	
+	
+	/**
+	 * ダウンロード
+	 * @param workReportsListForm
+	 * @param id
+	 * @return
+	 */
+	public String createExcel(WorkReportsListForm workReportsListForm, LoginDataInfo loginDataInfo) {
+		
+		List<DailyReport> list = selectDailyReport(workReportsListForm, loginDataInfo.getId());
+		List <WorkReportsListDto> dtoList = setWorkReportsListDto(list);
+		monthlyReportOutputService.createExcel(dtoList, loginDataInfo.getUserName());
+		
+		return "excel";
+	}
+	
+	
+	/**
 	 * daily_reportを取得する
 	 * @param wrlForm
 	 * @param id
 	 * @param month
 	 * @return
 	 */
-	public List<DailyReport> selectDailyReport(WorkReportsListForm wrlForm, String id, String date) {
-
+	public List<DailyReport> selectDailyReport(WorkReportsListForm wrlForm, String id) {
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMM");
+		
+		Date dateS = new Date();
+		Date dateE = new Date();
+		
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(dateE);;
+		calendar.add(Calendar.MONTH, 1);
+		dateE = calendar.getTime();
+		
 		DailyReport dailyReport = new DailyReport();
 		BeanUtils.copyProperties(wrlForm, dailyReport);
 		dailyReport.setId(id);
-		dailyReport.setWorkingDate(date);
+		dailyReport.setWorking_date_s(sdf.format(dateS).concat("01"));
+		dailyReport.setWorking_date_e(sdf.format(dateE).concat("01"));
+		
 		List<DailyReport> list = dBDailyReportService.searchDailyReport(dailyReport);
 		
 		return list;
 	}
 	
+	
+	/**
+	 * 曜日取得
+	 * @param ymd
+	 * @return
+	 */
 	public String getYobi(String ymd){
 		try{
 			//曜日
@@ -76,11 +149,8 @@ public class WorkReportsListService {
 	 * @param list
 	 * @return
 	 */
-//	public List <WorkReportsListDto> setWorkReportsListDto(WorkReportsListDto dto, List<DailyReport> list) {
 	public List <WorkReportsListDto> setWorkReportsListDto(List<DailyReport> list) {
-
-//	int i = 0;
-
+		
 		List<WorkReportsListDto> wrlDto = new ArrayList<>();
 		for(int i=0; i < list.size(); i++) {
 			List<WorkReportsListDto>dto2 = new ArrayList<>();
@@ -102,6 +172,10 @@ public class WorkReportsListService {
 			//勤務時間
 			String dutyS = list.get(i).getWorkingDate()+start;
 			String dutyE = list.get(i).getWorkingDate()+end;
+			
+			
+			
+			
 			BigDecimal dutyTime = getDutyTime(dutyS,dutyE);
 			dto.setDutyTime(dutyTime.toString()); 
 			//休憩時間
@@ -202,4 +276,65 @@ public class WorkReportsListService {
 			return breakTime = new BigDecimal(0);
 		}
  	}
+
+/**
+ * 日報DB更新
+ * @param registrationForm
+ */
+	public void updateDB(RegistrationForm registrationForm) {
+		
+		UpdateDailyReport updateDailyReport = new UpdateDailyReport();
+		updateDailyReport.setId(registrationForm.getId());
+		updateDailyReport.setWorkingDate(registrationForm.getWorkingDate());
+		updateDailyReport.setWorkingStartTime(registrationForm.getWorkingStartTime());
+		updateDailyReport.setWorkingEndTime(registrationForm.getWorkingEndTime());
+		updateDailyReport.setWorkingContents(registrationForm.getWorkingContents());
+
+		updateDailyReport.setWorkingTime("00:00:00");
+		updateDailyReport.setShomuSonota("");
+		updateDailyReport.setShokan("");
+		
+		dBDailyReportService.updateDailyReport(updateDailyReport);
+
+	}
+	
+	public void updateDB(WorkReportsListForm workReportsListForm) {
+		
+		UpdateDailyReport updateDailyReport = new UpdateDailyReport();
+		updateDailyReport.setId(workReportsListForm.getId());
+		updateDailyReport.setWorkingDate(workReportsListForm.getWorkingDate());
+		updateDailyReport.setWorkingStartTime(workReportsListForm.getWorkingStartTime());
+		updateDailyReport.setWorkingEndTime(workReportsListForm.getWorkingEndTime());
+		updateDailyReport.setWorkingContents(workReportsListForm.getWorkingContents());
+		
+		updateDailyReport.setWorkingTime("00:00:00");
+		updateDailyReport.setShomuSonota("");
+		updateDailyReport.setShokan("");
+		
+		dBDailyReportService.updateDailyReport(updateDailyReport);
+
+	}
+	
+	/**
+	 * 勤怠時刻取得
+	 */
+	public void selectAttendance() {
+		//String型のworkingDate
+		DailyReport dailyReport = new DailyReport();
+		dailyReport.setWorkingDate("2020-10-01");
+		List<DailyReport> list = dailyReportMapper.selectAttendance(dailyReport);
+		
+		String workTime = list.get(0).getWorkingTime();
+		
+		//hhmmssの場合
+		if (workTime.length()<5) {
+			
+		}
+		//hmmssの場合
+		else {
+			
+		}
+		
+		
+	}
 }
