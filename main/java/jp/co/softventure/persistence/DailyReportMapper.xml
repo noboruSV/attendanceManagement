@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+"-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="jp.co.softventure.persistence.DailyReportMapper">
+
+<!-- 	<insert id="insert">
+		INSERT INTO daily_report(
+			id
+			,working_date
+			,working_time
+			,working_start_time
+			,working_end_time
+			,working_contents
+			,shomu_sonota
+			,shokan
+			)
+			VALUES (
+			#{id}
+			,#{working_date}
+			,#{working_time}
+			,#{working_start_time}
+			,#{working_end_time}
+			,#{working_contents}
+			,#{shomu_sonota}
+			,#{shokan}
+			)
+	</insert> -->
+	
+<!--  	<resultMap id="getResuldDailyReport" type="jp.co.softventure.domain.DailyReport">
+		<result property="workingDate" column="working_date" />
+		<result property="workingTime" column="working_time" />
+		<result property="workingStartTime" column="working_start_time" />
+		<result property="workingEndTime" column="working_end_time" />
+		<result property="workingContents" column="working_contents" />
+		<result property="shomuSonota" column="shomu_sonota" />
+	</resultMap> -->
+	<!--<select id="select" resultMap="getResuldDailyReport"> -->
+	
+	<!-- 一覧表示用 -->
+	<select id="select" resultType="jp.co.softventure.domain.DailyReport">
+		 SELECT
+			id
+			,working_date
+			,working_time
+			,working_start_time
+			,working_end_time
+			,working_contents
+			,shomu_sonota
+			,shokan
+		 	FROM daily_report
+		<where>
+			<if test="id != ''">
+				id = #{id}
+			</if>
+			<if test="working_date_s != ''">
+				<![CDATA[ AND working_date >= #{working_date_s} ]]>
+			</if>
+			<if test="working_date_e != ''">
+				<![CDATA[ AND working_date < #{working_date_e} ]]>
+			</if>
+		</where>
+		ORDER BY working_date
+	</select>
+	
+	<!-- dailyReport  勤怠時刻-->
+	<resultMap id="getResultDailyReport" type="jp.co.softventure.domain.DailyReport">
+		<result property="workingDate" column="working_date" />
+		<result property="workingTime" column="working_time" />
+		<result property="workingStartTime" column="working_start_time" />
+		<result property="workingEndTime" column="working_end_time" />
+		<result property="workingContents" column="working_contents" />
+		<result property="shomuSonota" column="shomu_sonota" />
+	</resultMap>
+	
+	<!-- <select id="selectAttendance" resultMap="getResultDailyReport"> -->
+	<select id="selectAttendance" resultMap="getResultDailyReport">
+		SELECT
+			<![CDATA[ working_end_time - working_start_time ]]> as working_time
+			<!-- working_start_time
+			,working_end_time -->
+		FROM 
+			daily_report
+		<where>
+			<![CDATA[ working_date = #{workingDate} ]]>
+		</where>
+ 	</select>
+
+	<!-- 更新処理前比較用 START-->
+	<select id="selectIdDate" resultMap="getResultDailyReport">
+		SELECT
+			id
+			,working_date
+			,working_time
+			,working_start_time
+			,working_end_time
+			,working_contents
+			,shomu_sonota
+			,shokan
+		FROM
+			daily_report
+		<where>
+			<if test="id != ''">
+				<![CDATA[ id = #{id} ]]>
+			</if>
+			<if test="workingDate != ''">
+				<![CDATA[ AND working_date = #{workingDate} ]]>
+			</if>
+<!-- 
+			<if test="workingTime != ''">
+				<![CDATA[ AND working_time = #{workingTime} ]]>
+			</if>
+			<if test="workingStartTime != ''">
+				<![CDATA[ AND working_start_time = #{workingStartTime} ]]>
+			</if>
+			<if test="workingEndTime !=''">
+				<![CDATA[ AND working_end_time = #{workingEndTime} ]]>
+			</if>
+			<if test="workingContents !=''">
+				<![CDATA[ AND working_contents = #{workingContents} ]]>
+			</if>
+			<if test="shomuSonota !=''">
+				<![CDATA[ AND shomu_sonota = #{shomuSonota} ]]>
+			</if>
+			<if test="shokan != ''">
+				<![CDATA[ AND shokan = #{shokan} ]]>
+			</if>
+-->
+
+			
+			
+			
+		</where>
+	</select>
+	<!-- 更新処理前比較用 END-->
+
+
+
+	<!-- Dto -->
+<!-- 	<resultMap id="getResultDailyReport2" type="jp.co.softventure.domain.dto.DailyReportDto">
+		<result property="workingDate" column="working_date" />
+		<result property="workingTime" column="working_time" />
+		<result property="workingStartTime" column="working_start_time" />
+		<result property="workingEndTime" column="working_end_time" />
+		<result property="workingContents" column="working_contents" />
+		<result property="shomuSonota" column="shomu_sonota" />
+	</resultMap>
+	
+	<select id="selectAttendance" resultMap="getResultDailyReport">
+	<select id="selectAttendance" resultMap="getResultDailyReport2">
+		SELECT
+			<![CDATA[ working_end_time - working_start_time ]]> as working_time
+			working_start_time
+			,working_end_time
+		FROM 
+			daily_report
+		<where>
+			<![CDATA[ working_date = #{workingDate} ]]>
+		</where>
+ 	</select>
+ -->
+ 	
+	<update id="update" parameterType="jp.co.softventure.domain.UpdateDailyReport">
+		UPDATE daily_report
+		SET 
+			id = #{id}
+			,working_date = #{workingDate}
+			,working_time = #{workingTime}
+			,working_start_time = #{workingStartTime}
+			,working_end_time = #{workingEndTime}
+			,shomu_sonota = #{shomuSonota}
+			,working_contents = #{workingContents}
+			,shokan = #{shokan}
+		
+		WHERE id = #{id}
+		AND working_date = #{workingDate}
+	</update>
+	
+</mapper>

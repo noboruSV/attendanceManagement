@@ -74,9 +74,9 @@ public class WorkReportsListService {
 		
 		List<DailyReport> list = selectDailyReport(workReportsListForm, loginDataInfo.getId());
 		List <WorkReportsListDto> dtoList = setWorkReportsListDto(list);
-		monthlyReportOutputService.createExcel(dtoList, loginDataInfo.getUserName());
+		String str = monthlyReportOutputService.createExcel(dtoList, loginDataInfo.getUserName());
 		
-		return "excel";
+		return str;
 	}
 	
 	
@@ -153,7 +153,7 @@ public class WorkReportsListService {
 		
 		List<WorkReportsListDto> wrlDto = new ArrayList<>();
 		for(int i=0; i < list.size(); i++) {
-			List<WorkReportsListDto>dto2 = new ArrayList<>();
+//			List<WorkReportsListDto>dto2 = new ArrayList<>();
 			WorkReportsListDto dto = new WorkReportsListDto();
 			//年
 			dto.setYear(list.get(i).getWorkingDate().substring(0, 4));
