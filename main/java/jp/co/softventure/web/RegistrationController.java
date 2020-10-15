@@ -18,7 +18,6 @@ import org.springframework.validation.annotation.Validated;
 import jp.co.softventure.bean.SessionBean;
 import jp.co.softventure.domain.*;
 import jp.co.softventure.service.RegistrationService;
-import jp.co.softventure.web.login.LoginForm;
 
 @Controller
 public class RegistrationController {
@@ -32,11 +31,6 @@ public class RegistrationController {
 	@ModelAttribute(value = "setForm")
 	public RegistrationForm setForm() {
 		return new RegistrationForm();
-	}
-	
-	@ModelAttribute(value = "loginForm")
-	public LoginForm setLoginForm() {
-		return new LoginForm();
 	}
 
 	//DB登録メソッド
