@@ -4,8 +4,7 @@ package jp.co.softventure.persistence;
 import java.util.List;
 import jp.co.softventure.domain.DailyReport;
 import jp.co.softventure.domain.UpdateDailyReport;
-import jp.co.softventure.domain.WorkingReport;
-import jp.co.softventure.domain.dto.DailyReportDto;
+
 
 /**
  * 

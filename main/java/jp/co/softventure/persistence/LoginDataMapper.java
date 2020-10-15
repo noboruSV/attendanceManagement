@@ -1,10 +1,7 @@
 package jp.co.softventure.persistence;
 
 import java.util.List;
-import jp.co.softventure.domain.dto.LoginDto;
-
 import jp.co.softventure.domain.LoginData;
-import jp.co.softventure.domain.SearchLoginData;
 
 /**
  * 

@@ -4,14 +4,11 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import jp.co.softventure.domain.DailyReport;
 import jp.co.softventure.domain.UpdateDailyReport;
-import jp.co.softventure.dto.DailyReportDto;
 import jp.co.softventure.persistence.DailyReportMapper;
 /**
  * 
