@@ -9,7 +9,7 @@ import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.WebApplicationContext;
 
-import jp.co.softventure.domain.dto.WorkReportsListDto;
+import jp.co.softventure.dto.WorkReportsListDto;
 
 /**
  * 

@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import jp.co.softventure.domain.DailyReport;
 import jp.co.softventure.domain.UpdateDailyReport;
-import jp.co.softventure.domain.dto.DailyReportDto;
+import jp.co.softventure.dto.DailyReportDto;
 import jp.co.softventure.persistence.DailyReportMapper;
 /**
  * 
