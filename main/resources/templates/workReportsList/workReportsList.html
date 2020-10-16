@@ -4,68 +4,86 @@
 	<head>
 		<meta charset="UTF-8">
 		<title>日報一覧表</title>
+		<style type="text/css">
+		.result{
+			width:1300px;
+			
+		}
+		
+		body{
+		  text-align: center;
+		
+		}
+		table{
+		  border-collapse:collapse;
+		}
+		
+		table tr th:nth-of-type(-n + 7) {
+			background-color: #87cefa;
+		}
+		</style>
 	</head>
 	<body>
-		<form th:action="@{/workReportsList}" th:object="${workReportsListForm}" method="post" >
-
-				<table  style=width:600px border="1" >
-				<tr>
-					<td rowspan="2" colspan="3">日付</td>
-					<td rowspan="2" >作業内容</td>
-					<td colspan="5">勤務時間</td>
-				</tr>
-				<tr>
-					<td>出社時間</td>
-					<td>退社時間</td>
-					<td>勤務時間</td>
-					<td>休憩時間</td>
-					<td>作業時間</td>
-				</tr>
-				<tr th:each="listResult : *{dailyReportResult}">
-					<td >
-						<input type="text" th:value="${listResult.year}"  readonly/>
-					</td>
-					<td>
-						<input type="text" th:value="${listResult.date}" readonly />
-					</td>
-					<td>
-						<input type="text" th:value="${listResult.week}" readonly />
-					</td>
-					<td>
-						<input type="text"  th:value="${listResult.workingContents}" readonly />
-					</td>
-					<td>
-						<input type="text"  th:value="${listResult.workingStartTime}"  readonly/>
- 					</td>
-					<td>
-						<input type="text"  th:value="${listResult.workingEndTime}"  readonly/>
-					</td>
-					<td>
-						<input type="text" th:value="${listResult.dutyTime}"  readonly />
-					</td>
-					<td>
-						<input type="text" th:value="${listResult.breakTime}" readonly  />
-					</td>
-					<td>
-						<input type="text" th:value="${listResult.workTime}"  readonly/>
-					</td>
-				</tr>
-			</table>
-			<table>
-				<tr>
-					<td>
-						<input type="submit" th:name="upDate" value="更新" />
-					</td>
-					<td>
-						<input type="submit" th:name="backMenu" value="メニュー画面へ戻る" />
-						<!-- <input type="submit" value="メニュー画面へ戻る2" onclick="goMenu();"/> -->
-					</td>
-					<td>
-						<input type="submit" th:name="logout" value="ログアウト" />
-					</td>
-				</tr>
-			</table>
-		</form>
+		<div align="center">
+			<form th:action="@{/list}" th:object="${workReportsListForm}" method="post" >
+				<div class="result" >
+					<table border="1" >
+						<thead>
+							<tr>
+								<th>日付</th>
+								<th>作業内容</th>
+								<th>出社時間</th>
+								<th>退社時間</th>
+								<th>勤務時間</th>
+								<th>休憩時間</th>
+								<th>作業時間</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="listResult : *{dailyReportResult}">
+		 						<td>
+									<input type="text" th:value="${listResult.date} + ${listResult.week}" readonly style="border:none"/>
+								</td>
+								<td>
+									<input type="text"  th:value="${listResult.workingContents}" readonly style="border:none"/>
+								</td>
+								<td>
+									<input type="text"  th:value="${listResult.workingStartTime}"  readonly style="border:none"/>
+			 					</td>
+								<td>
+									<input type="text"  th:value="${listResult.workingEndTime}"  readonly style="border:none"/>
+								</td>
+								<td>
+									<input type="text" th:value="${listResult.dutyTime}"  readonly style="border:none"/>
+								</td>
+								<td>
+									<input type="text" th:value="${listResult.breakTime}" readonly style="border:none"/>
+								</td>
+								<td>
+									<input type="text" th:value="${listResult.workTime}"  readonly style="border:none"/>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<table>
+					<tr>
+						<td>
+							<input type="submit" th:name="update" value="更新" />
+						</td>
+						<td>
+							<input type="submit" th:name="backMenu" value="メニュー画面へ戻る" />
+						</td>
+						<td>
+							<input type="submit" th:name="logout" value="ログアウト" />
+						</td>
+						<td>
+							<input type="submit" th:name="download" value="ダウンロード" />
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
 		<script type="text/javascript" src="workReportsList.js"></script>
 	</body>
 </html>
