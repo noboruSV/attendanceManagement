@@ -14,12 +14,24 @@
 		</where>
  	</select>
  	
- 	<!-- logoutページ用処理 -->
+ 	<insert id = "updateAutoLogin">
+		UPDATE login_data
+		SET auto_login = #{autoLogin}
+		WHERE id = #{id}
+	</insert>
+	
+	<select id= "selectLoginDataByAutoLogin" resultMap = "getLoginData">
+		SELECT id, administrative_right, auto_login FROM login_data WHERE auto_login = #{autoLogin}
+	</select>
+	
  	<resultMap id = "getLoginData" type = "jp.co.softventure.domain.LoginData">
 		<result property = "userName" column = "user_name"/>
 		<result property = "id" column = "id"/>
+		<result property = "autoLogin" column = "auto_login"/>
+		<result property = "administrativeRight" column = "administrative_right"/>
 	</resultMap>
 	
+	<!-- logoutページ用処理 -->
 	<select id= "selectUserName" resultMap = "getLoginData">
 		SELECT user_name FROM login_data WHERE id = #{id}
 	</select>
