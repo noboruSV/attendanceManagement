@@ -3,13 +3,15 @@ package jp.co.softventure.domain;
 /**
  * 
  * @author n.matsu
- * 2020/09/29 V‹Kì¬
+ * 2020/09/29 ï¿½Vï¿½Kï¿½ì¬
  * 
  */
 public class LoginData {
 	private String id;
 	private String password;
 	private String userName;
+	private String autoLogin;
+	private boolean administrativeRight;
 	
 	public String getId() {
 		return id;
@@ -33,6 +35,22 @@ public class LoginData {
 
 	public void setUserName(String userName) {
 		this.userName = userName;
+	}
+
+	public String getAutoLogin() {
+		return autoLogin;
+	}
+
+	public void setAutoLogin(String autoLogin) {
+		this.autoLogin = autoLogin;
+	}
+
+	public boolean getAdministrativeRight() {
+		return administrativeRight;
+	}
+
+	public void setAdministrativeRight(boolean administrativeRight) {
+		this.administrativeRight = administrativeRight;
 	}
 	
 }
