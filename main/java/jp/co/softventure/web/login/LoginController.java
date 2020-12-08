@@ -89,12 +89,12 @@ public class LoginController {
 		//直前にログアウトしておらず(auto_loginが初期化されておらず)、かつ管理者権限がない場合、日報一覧画面に遷移
 		if ( list.size() == 1 && !list.get(0).getAutoLogin().equals("0") && !list.get(0).getAdministrativeRight() ) {
 			sessionBean.setId(list.get(0).getId());
-			addCookies(response);
+			addCookie(response);
 			return "redirect:workreportslist/workReportsList";
 		//直前にログアウトしておらず(auto_loginが初期化されておらず)、かつ管理者権限がある場合、管理者画面に遷移
 		} else if ( list.size() == 1 && !list.get(0).getAutoLogin().equals("0") && list.get(0).getAdministrativeRight() ) {
 			sessionBean.setId(list.get(0).getId());
-			addCookies(response);
+			addCookie(response);
 			return "redirect:managementportal/managementPortal";
 		}
 		return "login";
@@ -182,7 +182,7 @@ public class LoginController {
 			model.addAttribute("loginForm", loginForm);
 			model.addAttribute("loginDataInfo", loginDataInfo);
 			sessionBean.setId(loginForm.getId());
-			addCookies(response);
+			addCookie(response);
 			return "redirect:workreportslist/workReportsList";
 		}
 		return "login";
@@ -192,7 +192,7 @@ public class LoginController {
 	//管理者画面ログイン用処理
 	@RequestMapping(value="/login", params="toManagementPortal")
 	public String loginConfToManagementPortal(
-	@ModelAttribute("loginForm") @Validated LoginForm loginForm, BindingResult result, HttpServletResponse response, SessionStatus sessionStatus, Model model) {
+	@ModelAttribute("loginForm") @Validated LoginForm loginForm, BindingResult result, HttpServletResponse response, Model model) {
 		if ( !result.hasErrors() ) {
 			loginForm = loginService.loginCheck(loginForm, model);
 			model.addAttribute("loginForm", loginForm);
@@ -202,7 +202,7 @@ public class LoginController {
 			}
 			if ( loginForm.getLoginJdgFlg() == (short)1 ) {
 				sessionBean.setId(loginForm.getId());
-				addCookies(response);
+				addCookie(response);
 				return "redirect:managementportal/managementPortal";
 			}
 		}
@@ -210,10 +210,10 @@ public class LoginController {
 	}
 	
 	//ログイン情報をcookieに保存
-	public void addCookies(HttpServletResponse response) {
+	public void addCookie(HttpServletResponse response) {
 		LoginData loginData = new LoginData();
 		//ハッシュ化した文字列をauto_login値に設定
-		loginData.setAutoLogin(passwordEncoder.encode(ManagementPortalController.PasswordGenerator()));
+		loginData.setAutoLogin(passwordEncoder.encode(ManagementPortalController.passwordGenerator()));
 		loginData.setId(sessionBean.getId());
 		dbLoginDataService.updateAutoLogin(loginData);
 		//auto_login値をvalueに設定したcookieを生成
@@ -236,12 +236,12 @@ public class LoginController {
 		sessionStatus.setComplete();
 		//cookie情報を破棄
 		Cookie[] cookies = request.getCookies();
-	    for ( Cookie cookie : cookies ) {
+		for ( Cookie cookie : cookies ) {
 	        if ( cookie.getName().equals("SVAMSALID") ) {
 	        	cookie.setMaxAge(0);
 	        	cookie.setValue("");
 	        	cookie.setPath("/");
-	            response.addCookie(cookie);
+	        	response.addCookie(cookie);
 	        }
 	    } 
 	}
