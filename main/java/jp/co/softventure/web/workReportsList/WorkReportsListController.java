@@ -212,7 +212,7 @@ public class WorkReportsListController {
 	@RequestMapping(value="workreportslist/workReportsList", params = "logout")
 	public ModelAndView logout(HttpServletRequest request, HttpServletResponse response, SessionStatus sessionStatus, ModelAndView mav) throws Exception {
 		loginController.logout(request, response, sessionStatus);
-	    mav.setViewName("redirect:../login");
+		mav.setViewName("redirect:../login");
 		return mav;
 	}
 	
