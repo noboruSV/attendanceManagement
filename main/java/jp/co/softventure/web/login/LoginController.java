@@ -1,16 +1,29 @@
 package jp.co.softventure.web.login;
 
+import java.util.List;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionStatus;
+
 import jp.co.softventure.bean.SessionBean;
+import jp.co.softventure.domain.LoginData;
 import jp.co.softventure.model.LoginDataInfo;
+import jp.co.softventure.service.DBLoginDataService;
 import jp.co.softventure.service.LoginService;
+import jp.co.softventure.web.managementportal.ManagementPortalController;
 
 /**
  * 
@@ -31,7 +44,13 @@ public class LoginController {
 	private LoginService loginService;
 	
 	@Autowired
+	private DBLoginDataService dbLoginDataService;
+	
+	@Autowired
 	public SessionBean sessionBean;
+	
+	@Autowired
+    PasswordEncoder passwordEncoder;
 	
 	//del n.matsu コントローラの記述削減対応 start
 //	@ModelAttribute(value = "searchLoginDataForm")
@@ -52,11 +71,32 @@ public class LoginController {
 	
 	/**
 	 * ログイン画面表示
+	 * @param svamsalidValue
 	 * @param loginForm
+	 * @param request
+	 * @param response
+	 * @param model
 	 * @return
 	 */
+	
 	@RequestMapping("/login")
-	public String login(LoginForm loginForm) {
+	public String login(@CookieValue(name = "SVAMSALID", required = false) String svamsalidValue, 
+	LoginForm loginForm, HttpServletRequest request, HttpServletResponse response, Model model) {
+		LoginData loginData = new LoginData();
+		//cookieの値を取得してauto_loginに設定
+		loginData.setAutoLogin(svamsalidValue);
+		List<LoginData> list = dbLoginDataService.selectLoginDataByAutoLogin(loginData);
+		//直前にログアウトしておらず(auto_loginが初期化されておらず)、かつ管理者権限がない場合、日報一覧画面に遷移
+		if ( list.size() == 1 && !list.get(0).getAutoLogin().equals("0") && !list.get(0).getAdministrativeRight() ) {
+			sessionBean.setId(list.get(0).getId());
+			addCookies(response);
+			return "redirect:workreportslist/workReportsList";
+		//直前にログアウトしておらず(auto_loginが初期化されておらず)、かつ管理者権限がある場合、管理者画面に遷移
+		} else if ( list.size() == 1 && !list.get(0).getAutoLogin().equals("0") && list.get(0).getAdministrativeRight() ) {
+			sessionBean.setId(list.get(0).getId());
+			addCookies(response);
+			return "redirect:managementportal/managementPortal";
+		}
 		return "login";
 	}
 	
@@ -74,7 +114,7 @@ public class LoginController {
 //	@ModelAttribute("searchLoginDataForm") SearchLoginDataForm searchLoginDataForm,
 //	@Validated LoginForm loginForm, BindingResult result, Model model) {
 	public String loginConf(@ModelAttribute LoginDataInfo loginDataInfo,
-			@Validated LoginForm loginForm, BindingResult result, Model model) {
+			@Validated LoginForm loginForm, BindingResult result, HttpServletResponse response, Model model) {
 	//mod n.matsu コントローラの記述削減対応 end
 
 		if (result.hasErrors()) {
@@ -132,8 +172,6 @@ public class LoginController {
 		//add n.matsu コントローラの記述削減対応 start
 		//ログイン認証
 		loginForm = loginService.loginCheck(loginForm, model);
-
-		sessionBean.setId(loginForm.getId());
 		
 		loginDataInfo = loginService.setloginDataInfo(loginForm,loginDataInfo);
 		
@@ -143,10 +181,69 @@ public class LoginController {
 		if (loginDataInfo.getLoginJdgFlg() == (short)1) {
 			model.addAttribute("loginForm", loginForm);
 			model.addAttribute("loginDataInfo", loginDataInfo);
-			return "menu/menu";
+			sessionBean.setId(loginForm.getId());
+			addCookies(response);
+			return "redirect:workreportslist/workReportsList";
 		}
 		return "login";
 		//add n.matsu コントローラの記述削減対応 end
 	}
+	
+	//管理者画面ログイン用処理
+	@RequestMapping(value="/login", params="toManagementPortal")
+	public String loginConfToManagementPortal(
+	@ModelAttribute("loginForm") @Validated LoginForm loginForm, BindingResult result, HttpServletResponse response, SessionStatus sessionStatus, Model model) {
+		if ( !result.hasErrors() ) {
+			loginForm = loginService.loginCheck(loginForm, model);
+			model.addAttribute("loginForm", loginForm);
+			if ( loginForm.getLoginJdgFlg() != (short)2 && loginForm.getLoginJdgFlg() != (short)3 && !loginForm.getAdministrativeRight() ) {
+				//ログイン判定フラグ：4 ⇒ 管理者権限不保持
+				loginForm.setLoginJdgFlg((short)4);
+			}
+			if ( loginForm.getLoginJdgFlg() == (short)1 ) {
+				sessionBean.setId(loginForm.getId());
+				addCookies(response);
+				return "redirect:managementportal/managementPortal";
+			}
+		}
+		return "/login";
+	}
+	
+	//ログイン情報をcookieに保存
+	public void addCookies(HttpServletResponse response) {
+		LoginData loginData = new LoginData();
+		//ハッシュ化した文字列をauto_login値に設定
+		loginData.setAutoLogin(passwordEncoder.encode(ManagementPortalController.PasswordGenerator()));
+		loginData.setId(sessionBean.getId());
+		dbLoginDataService.updateAutoLogin(loginData);
+		//auto_login値をvalueに設定したcookieを生成
+		Cookie cookie = new Cookie("SVAMSALID", loginData.getAutoLogin());
+		//30日期限
+		cookie.setMaxAge(30 * 24 * 60 * 60);
+		cookie.setHttpOnly(true);
+		//cookie.setSecure(true);
+		response.addCookie(cookie);
+	}
+	
+	//ログアウト処理
+	public void logout(HttpServletRequest request, HttpServletResponse response, SessionStatus sessionStatus) {
+		//auto_login値を初期化
+		LoginData loginData = new LoginData();
+		loginData.setId(sessionBean.getId());
+		loginData.setAutoLogin("0");
+		dbLoginDataService.updateAutoLogin(loginData);
+		//セッション破棄
+		sessionStatus.setComplete();
+		//cookie情報を破棄
+		Cookie[] cookies = request.getCookies();
+	    for ( Cookie cookie : cookies ) {
+	        if ( cookie.getName().equals("SVAMSALID") ) {
+	        	cookie.setMaxAge(0);
+	        	cookie.setValue("");
+	        	cookie.setPath("/");
+	            response.addCookie(cookie);
+	        }
+	    } 
+	}
+	
 }
-
