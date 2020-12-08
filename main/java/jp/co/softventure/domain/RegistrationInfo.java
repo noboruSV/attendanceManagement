@@ -9,10 +9,12 @@ public class RegistrationInfo {
 	private Time workingTime;
 	private Time workingStartTime;
 	private Time workingEndTime;
+	private String breakTime;
 	private String workingContents;
 	private String workingSonota;
 	private String shokan;
 	private String id;
+	private String recRgstUser;
 
 	public Date getWorkingDate() {
 		return workingDate;
@@ -45,6 +47,14 @@ public class RegistrationInfo {
 	public void setWorkingEndTime(Time workingEndTime) {
 		this.workingEndTime = workingEndTime;
 	}
+	
+	public String getBreakTime() {
+		return breakTime;
+	}
+
+	public void setBreakTime(String breakTime) {
+		this.breakTime = breakTime;
+	}
 
 	public String getWorkingContents() {
 		return workingContents;
@@ -76,6 +86,14 @@ public class RegistrationInfo {
 
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	public String getRecRgstUser() {
+		return recRgstUser;
+	}
+
+	public void setRecRgstUser(String recRgstUser) {
+		this.recRgstUser = recRgstUser;
 	}
 	
 }
