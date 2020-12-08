@@ -50,9 +50,10 @@
 	<update id="updateEmploymentStatus">
 		UPDATE login_data SET 
 			employment_status = #{employmentStatus},
-			rec_updt_dt = CASE WHEN #{employmentStatus} = '2'
-							   THEN CURRENT_TIMESTAMP()
-							   ELSE rec_updt_dt END
+			rec_updt_dt = CASE 
+				WHEN #{employmentStatus} = '2'
+				THEN CURRENT_TIMESTAMP()
+				ELSE rec_updt_dt END
 		WHERE id = #{id}
 	</update>
 	
