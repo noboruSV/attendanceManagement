@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" media="all" th:href="@{/css/style.css}"/>
+	<link rel="stylesheet" th:href="@{/webjars/bootstrap/4.5.3/css/bootstrap.min.css}">
+	<style type="text/css">
+	<!--
+	div.managementPortal_div * {
+		margin-right: auto;
+		margin-left: auto;
+	}
+	-->
+	</style>
+	<title>社員情報修正画面</title>
+</head>
+<body>
+	<p class="errmsg" th:text="${errmsg}"></p>
+	<form id="form" th:action="@{/managementPortalUpdate}" th:object="${managementPortalUpdate}" method="post">
+		<div class="managementPortal_div">
+			<table>
+				<tr>
+					<th id="managementPortal_upd_userName_th"><label for="userName">氏名 ：</label></th>
+					<td id="managementPortal_upd_userName_td">
+						<input type="text" id="userName" name="userName" th:value="*{userName}" th:field="*{userName}" th:errorclass="err"/>
+						<p th:if="${#fields.hasErrors('userName')}" th:errors="*{userName}" th:errorclass="err"></p>
+					</td>
+				</tr>
+				<tr>
+					<th id="managementPortal_upd_id_th"><label for="id">ID ：</label></th>
+					<td id="managementPortal_upd_id_td">
+						<input type="text" style="border-width:0px;border-style:None;padding-left:4px;" id="id" name="id" readonly="readonly" th:value="*{id}" th:field="*{id}"/>
+					</td>
+				</tr>
+				<tr>
+					<th id="managementPortal_upd_pw_th"><label for="pw">PW ：</label></th>
+					<td id="managementPortal_upd_pw_td">
+						<input style="display:inline" type="text" id="pw" name="password" th:value="*{password}" th:field="*{password}" placeholder="新規に生成して下さい" th:errorclass="err"/>
+						<input style="display:inline" type="submit" id="passwordGenerator" name="pwgen_btn" value="生成">
+						<p th:if="${#fields.hasErrors('password')}" th:errors="*{password}" th:errorclass="err"></p>
+					</td>
+				</tr>
+				<tr>
+					<th id="managementPortal_ins_email_th"><label for="email">メールアドレス ：</label></th>
+					<td id="managementPortal_ins_email_td">
+						<input type="email" id="email" name="emailAddress" th:value="*{emailAddress}" th:field="*{emailAddress}" th:errorclass="err"/>
+						<p th:if="${#fields.hasErrors('emailAddress')}" th:errors="*{emailAddress}" th:errorclass="err"></p>
+					</td>
+				</tr>
+				<tr>
+					<th id="managementPortal_upd_admin_th"><label for="admin">管理者権限 ：</label></th>
+					<td id="managementPortalupd_admin_td"><input type="checkbox" id="admin" name="admin" th:checked="*{administrativeRight}"/></td>
+				</tr>
+			</table>
+		</div>
+		<div class="managementPortal_submit_div">
+			<input type="submit" class="btn btn-primary" id="update" name="update_btn" value="修正">
+			<input type="button" class="btn btn-primary" id="back" onclick="window.history.back();" value="戻る">
+		</div>
+	</form>
+	
+</body>
+</html>

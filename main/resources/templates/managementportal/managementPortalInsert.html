@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" media="all" th:href="@{/css/style.css}"/>
+	<link rel="stylesheet" th:href="@{/webjars/bootstrap/4.5.3/css/bootstrap.min.css}">
+	<style type="text/css">
+	<!--
+	div.managementPortal_div * {
+		margin-right: auto;
+		margin-left: auto;
+	}
+	-->
+	</style>
+	<title>社員情報新規追加画面</title>
+</head>
+<body>
+	<p class="errmsg" th:text="${errmsg}"></p>
+	<form id="form" th:action="@{/managementPortalInsert}" th:object="${managementPortalInsert}" method="post">
+		<div class="managementPortal_div">
+			<table>
+				<tr>
+					<th id="managementPortal_ins_userName_th"><label for="userName">氏名 ：</label></th>
+					<td id="managementPortal_ins_userName_td">
+						<input type="text" id="userName" name="userName" th:value="*{userName}" th:errorclass="err"/>
+						<p th:if="${#fields.hasErrors('userName')}" th:errors="*{userName}" th:errorclass="err"></p>
+					</td>
+				</tr>
+				<tr>
+					<th id="managementPortal_ins_id_th"><label for="id">ID ：</label></th>
+					<td id="managementPortal_ins_id_td">
+						<input type="text" id="id" name="id" th:value="*{id}" th:errorclass="err"/>
+						<p th:if="${#fields.hasErrors('id')}" th:errors="*{id}" th:errorclass="err"></p>
+					</td>
+				</tr>
+				<tr>
+					<th id="managementPortal_ins_pw_th"><label for="pw">PW ：</label></th>
+					<td id="managementPortal_ins_pw_td">
+						<input style="display:inline" type="text" id="pw" th:value="*{password}" th:field="*{password}" th:errorclass="err"/>
+						<input style="display:inline" type="submit" id="passwordGenerator" name="pwgen_btn" value="生成">
+						<p th:if="${#fields.hasErrors('password')}" th:errors="*{password}" th:errorclass="err"></p>
+					</td>
+				</tr>
+				<tr>
+					<th id="managementPortal_ins_email_th"><label for="email">メールアドレス ：</label></th>
+					<td id="managementPortal_ins_email_td">
+						<input type="email" id="email" th:value="*{emailAddress}" th:field="*{emailAddress}" th:errorclass="err"/>
+						<p th:if="${#fields.hasErrors('emailAddress')}" th:errors="*{emailAddress}" th:errorclass="err"></p>
+					</td>
+				</tr>
+				<tr>
+					<th id="managementPortal_ins_admin_th"><label for="admin">管理者権限 ：</label></th>
+					<td id="managementPortal_ins_admin_td"><input type="checkbox" id="admin" name="admin"/></td>
+				</tr>
+			</table>
+		</div>
+		<div class="managementPortal_submit_div">
+			<input type="submit" class="btn btn-primary" id="insert" name="insert_btn" value="追加">
+			<input type="button" class="btn btn-primary" id="back" onclick="window.history.back();" value="戻る">
+		</div>
+	</form>
+</body>
+</html>

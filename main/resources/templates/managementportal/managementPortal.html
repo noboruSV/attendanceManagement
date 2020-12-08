@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" media="all" th:href="@{/css/style.css}"/>
+	<link rel="stylesheet" th:href="@{/webjars/bootstrap/4.5.3/css/bootstrap.min.css}">
+	<style type="text/css">
+	<!--
+	div.managementPortal_div * {
+		margin-right: auto;
+		margin-left: auto;
+	}
+	-->
+	</style>
+	<title>管理者画面</title>
+</head>
+<body>
+	<p class="errmsg" th:text="${errmsg}"></p>
+	<form th:action="@{/managementportal/managementPortal}" th:object="${managementPortal}" method="post"> 
+		<div class="managementPortal_submit_div">
+			<input type="submit" class="btn btn-primary" id="add" name="add_btn" value="追加">
+			<input type="submit" class="btn btn-primary" id="revise" name="revise_btn" value="修正">
+			<input type="submit" class="btn btn-primary" id="erase" name="erase_btn" value="削除">
+			<input type="submit" class="btn btn-primary" id="export" name="export_btn" value="出力">
+			<input type="submit" class="btn btn-primary" id="logout" name="logout_btn" value="ログアウト">
+			<br><br>
+		</div>	
+		<div class="managementPortal_div">
+			<table>
+				<tr>
+					<td>
+						<h1>社員一覧</h1>
+					</td>
+				</tr>
+				<tr th:each="member:${members}">
+					<td>
+						<label class="managementPortal_label" th:for="${#ids.seq('member')}">
+							<input type="checkbox" onclick="Climit()" class="memberchk" th:id="${#ids.prev('member')}" th:field="*{userName}" th:value="${member.userName}"/>
+							<a th:inline="text" th:href="@{'/workreportslist/workReportsList/' + ${member.id}}" target="_blank" rel="noopener noreferrer">
+								[[${member.userName}]](id:[[${member.id}]])[[${member.administrativeRight}?''+'[管理者]']]
+							</a>
+						</label>
+					</td>
+				</tr>
+				<tr th:if=${isNonmembers}>
+					<td>
+						<h1>削除待機</h1>
+					</td>
+				</tr>
+				<tr th:if=${isNonmembers}>
+					<td th:each="nonmember:${nonmembers}">
+						<label class="managementPortal_label" th:for="${#ids.seq('nonmember')}">
+							<input type="checkbox" style="display:inline" onclick="Climit()" class="memberchk" th:id="${#ids.prev('nonmember')}" th:field="*{userName}" th:value="${nonmember.userName}"/>
+							<a th:inline="text" th:href="@{'/workreportslist/workReportsList/' + ${nonmember.id}}" target="_blank" rel="noopener noreferrer">
+								[[${nonmember.userName}]](id:[[${nonmember.id}]])[[${deletableDate}]]
+							</a>
+							<input type="submit" style="display:inline" id="restore" name="restore_btn" value="戻す">
+						</label>
+					</td>
+				</tr>
+			</table>
+		</div>
+	</form>
+	<script type="text/javascript">
+	<!--
+	//history.back時初期化
+	window.onpageshow = function(){
+		var member = document.querySelectorAll('.memberchk');
+		for ( i = 0; i < member.length; i++ ) {
+			member[i].checked = false;
+		}
+	}
+	var limit = 1; //check制限数
+	Flag = new Array(); //チェックの有無を格納する配列
+	function Climit() {
+		var v = 0; //チェックの合計
+		var member = document.querySelectorAll('.memberchk');// 指定した要素をすべて取得
+		for ( i = 0; i < member.length; i++ ) {
+			Flag[i] = i; // 配列Flagを初期化
+			if ( member[i].checked ) {
+				Flag[i] = "chk"; // チェックが入っていれば文字列 "chk"を代入
+				v++;
+				}
+		}
+		if( v >= limit ) { 
+			for ( i = 0; i < member.length; i++ ) {
+				if ( Flag[i] == "chk" ) {
+					member[i].disabled = false;
+				}
+				else {
+					member[i].disabled = true;
+				}
+			}
+		}
+		else{
+			for ( i = 0; i < member.length; i++ )
+				member[i].disabled = false;
+		}
+	}
+	-->
+	</SCRIPT>
+</body>
+</html>

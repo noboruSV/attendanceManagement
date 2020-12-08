@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" media="all" th:href="@{/css/style.css}"/>
+	<link rel="stylesheet" th:href="@{/webjars/bootstrap/4.5.3/css/bootstrap.min.css}">
+	<title>社員情報削除画面</title>
+</head>
+<body>
+	<form id="form" th:action="@{/managementportal/managementPortal}" th:object="${managementPortalDelete}" method="post">
+		<div class="managementPortal_del_div">
+			<table>
+				<tr>
+					<td colspan="2" th:text="|*{userName}さんのアカウントを削除します。（※以下の情報が削除されます）|"/>
+				</tr>
+			</table>
+			<table>
+				<tr>
+					<th>・</th>
+					<td id="managementPortal_del_id_td">ID:
+						<input type="text" style="border-width:0px;border-style:None;padding-left:4px;" readonly="readonly" id="id" name="id" th:value="*{id}" th:field="*{id}" th:errorclass="err"/>
+					</td>
+				</tr>
+				<tr>
+					<th>・</th>
+					<td>ログイン関連データ</td>
+				</tr>
+				<tr>
+					<th>・</th>
+					<td>日報データ</td>
+				</tr>
+			</table>
+		</div>
+		<div class="managementPortal_submit_div">
+			<input type="submit" class="btn btn-primary" id="delete" name="delete_btn" onClick="return Check()" value="削除">
+			<input type="button" class="btn btn-primary" id="back" onclick="window.history.back();" value="戻る">
+		</div>
+	</form>
+	<script type="text/javascript">
+		<!--
+		function Check(){
+			let checked = confirm("本当に削除してもよろしいですか？");
+			if (checked === true) {
+				checkIsDownloaded();
+				return true;
+			} else {
+				return false;
+			}
+		}
+		function checkIsDownloaded() {
+			setInterval(function () {
+				if (document.cookie.includes('complete=1')) {
+					document.cookie = "complete=; max-age=0;";
+					window.location.href = "/managementportal/managementPortal";
+				}
+			}, 1000);
+		}
+		-->
+	</script>
+</body>
+</html>
