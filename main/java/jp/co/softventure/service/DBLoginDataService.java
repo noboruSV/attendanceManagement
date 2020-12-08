@@ -32,12 +32,25 @@ public class DBLoginDataService {
 		return list;
 	}
 	
+	
 	//更新処理
 //	@Transactional
 //	public void update(LoginData loginData) {
 //		// データ登録
 //		mapper.update(loginData);
 //	}
+	
+	// add mtk start
+	//オートログイン用認証文字列を更新
+	public void updateAutoLogin(LoginData loginData) {
+		mapper.updateAutoLogin(loginData);
+	}
+	
+	public List<LoginData> selectLoginDataByAutoLogin(LoginData loginData) {
+		List<LoginData> list = mapper.selectLoginDataByAutoLogin(loginData);
+		return list;
+	}
+	//add mtk end
 	
 	// add mtk start
 	//ログアウトページ用メソッド
