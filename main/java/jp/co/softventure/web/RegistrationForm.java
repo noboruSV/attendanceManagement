@@ -18,6 +18,10 @@ public class RegistrationForm {
 	@Pattern(regexp = "^(([01][0-9]|2[0-3]):[0-5][0-9])$", message = "※無効な値です。") 
 	private String workingEndTime;
 	
+	@NotEmpty(message = "数値を入力してください。")
+	@Pattern(regexp = "^(([0-9][0-9]|[1-9][0-9][0-9]))$", message = "※無効な値です。")
+	private String breakTime;
+	
 	@Size(min = 1, max = 300, message = "※1～300字で入力してください。")
 	private String workingContents;
 	
@@ -28,6 +32,7 @@ public class RegistrationForm {
 	private String shokan;
 	
 	private String id;
+	private String recRgstUser;
 
 	public String getWorkingDate() {
 		return workingDate;
@@ -62,6 +67,14 @@ public class RegistrationForm {
 		this.workingEndTime = workingEndTime;
 	}
 
+	public String getBreakTime() {
+		return breakTime;
+	}
+
+	public void setBreakTime(String breakTime) {
+		this.breakTime = breakTime;
+	}
+
 	public String getWorkingContents() {
 		return workingContents;
 	}
@@ -92,6 +105,14 @@ public class RegistrationForm {
 
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	public String getRecRgstUser() {
+		return recRgstUser;
+	}
+
+	public void setRecRgstUser(String recRgstUser) {
+		this.recRgstUser = recRgstUser;
 	}
 	
 }
