@@ -25,7 +25,9 @@
 	</head>
 	<body>
 		<div align="center">
-			<form th:action="@{/list}" th:object="${workReportsListForm}" method="post" >
+			<!-- 管理者画面からアクセスした場合に表示  -->
+			<p th:text="${userName}"></p>
+			<form th:action="@{/workreportslist/workReportsList}" th:object="${workReportsListForm}" method="post" >
 				<div class="result" >
 					<table border="1" >
 						<thead>
@@ -69,10 +71,10 @@
 				<table>
 					<tr>
 						<td>
-							<input type="submit" th:name="update" value="更新" />
+							<input type="submit" th:name="insert" value="登録" />
 						</td>
 						<td>
-							<input type="submit" th:name="backMenu" value="メニュー画面へ戻る" />
+							<input type="submit" th:name="update" value="更新" />
 						</td>
 						<td>
 							<input type="submit" th:name="logout" value="ログアウト" />
