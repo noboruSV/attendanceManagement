@@ -29,6 +29,9 @@ public class LoginForm {
 	//ログイン判定フラグ
 	private short loginJdgFlg;
 	
+	//管理者権限
+	private boolean administrativeRight;
+	
 	public String getId() {
 		return id;
 	}
@@ -59,6 +62,14 @@ public class LoginForm {
 	
 	public void setLoginJdgFlg(short loginJdgFlg) {
 		this.loginJdgFlg = loginJdgFlg;
+	}
+
+	public boolean getAdministrativeRight() {
+		return administrativeRight;
+	}
+
+	public void setAdministrativeRight(boolean administrativeRight) {
+		this.administrativeRight = administrativeRight;
 	}
 	
 }
