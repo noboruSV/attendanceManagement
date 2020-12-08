@@ -2,10 +2,14 @@ package jp.co.softventure.service;
 
 import java.util.List;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
-import org.thymeleaf.util.StringUtils;
+//import org.thymeleaf.util.StringUtils;
 
 import jp.co.softventure.domain.LoginData;
 import jp.co.softventure.model.LoginDataInfo;
@@ -23,6 +27,14 @@ public class LoginService {
 
 	@Autowired
 	private DBLoginDataService dbLoginDataService;
+	
+	@Autowired
+    PasswordEncoder passwordEncoder;
+	
+	@Bean
+    PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
 	/**
 	 * ログイン認証処理
@@ -42,15 +54,16 @@ public class LoginService {
 
 		//ログイン認証OK				⇒		ログイン判定フラグ：1
 		//ログインIDが存在しない		⇒		ログイン判定フラグ：2
-		//パスワード不一致			⇒		ログイン判定フラグ：3
-		if(resultList == null || resultList.size() == 0) {
+		//パスワード不一致				⇒		ログイン判定フラグ：3
+		if(resultList == null || !(resultList.size() == 1)) {
 			loginForm.setLoginJdgFlg((short)2);
-		} else if (!StringUtils.equals(loginForm.getPw(), resultList.get(0).getPassword())) {
+		} else if (!passwordEncoder.matches(loginForm.getPw(), resultList.get(0).getPassword()))
+		/*else if (!StringUtils.equals(loginForm.getPw(), resultList.get(0).getPassword())) */{
 			loginForm.setLoginJdgFlg((short)3);
 		} else {
+			loginData = resultList.get(0);
 			loginForm.setLoginJdgFlg((short)1);
-			loginForm.setId(resultList.get(0).getId());
-			loginForm.setUserName(resultList.get(0).getUserName());
+			BeanUtils.copyProperties(loginData, loginForm);
 		}
 		return loginForm;
 		
