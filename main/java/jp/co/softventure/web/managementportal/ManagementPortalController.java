@@ -139,7 +139,7 @@ public class ManagementPortalController {
 	//「社員情報新規追加画面」で「生成」押下時の処理
 	@RequestMapping(value = "/managementPortalInsert", params ="pwgen_btn")
 	public ModelAndView dispGeneratedPassword(@ModelAttribute("managementPortalInsert")ManagementPortalForm managementPortalForm, ModelAndView mav) {
-		String password = PasswordGenerator();
+		String password = passwordGenerator();
 		managementPortalForm.setPassword(password);
 		mav.setViewName("managementportal/managementPortalInsert");
 		return mav;
@@ -210,7 +210,7 @@ public class ManagementPortalController {
 	//「社員情報新規追加画面」で「生成」押下時の処理
 	@RequestMapping(value = "/managementPortalUpdate", params ="pwgen_btn")
 	public ModelAndView dispGeneratedPasswordForUpdate(@ModelAttribute("managementPortalUpdate")ManagementPortalForm managementPortalForm, ModelAndView mav) {
-		String password = PasswordGenerator();
+		String password = passwordGenerator();
 		managementPortalForm.setPassword(password);
 		mav.setViewName("managementportal/managementPortalUpdate");
 		return mav;
@@ -347,7 +347,7 @@ public class ManagementPortalController {
 	@RequestMapping(value = "managementportal/managementPortal", params ="logout_btn")
 	public ModelAndView logout(HttpServletRequest request, HttpServletResponse response, SessionStatus sessionStatus, ModelAndView mav) throws Exception {
 		loginController.logout(request, response, sessionStatus);
-	    mav.setViewName("redirect:../login");
+		mav.setViewName("redirect:../login");
 		return mav;
 	}
 	/*
@@ -445,7 +445,7 @@ public class ManagementPortalController {
 	}
 	
 	//パスワード生成
-	public static String PasswordGenerator() {
+	public static String passwordGenerator() {
 		List<CharacterRule> rules = Arrays.asList(
 			new CharacterRule(EnglishCharacterData.UpperCase, 1),
 			new CharacterRule(EnglishCharacterData.LowerCase, 1),

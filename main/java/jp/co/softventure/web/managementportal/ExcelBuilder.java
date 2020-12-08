@@ -38,15 +38,15 @@ public class ExcelBuilder {
 		    for ( int i = 0; i < list.size(); i++ ) {
 		    	managementPortalInfo = list.get(i);
 		    	row = sheet.createRow(1 + i);
-	            row.createCell(0).setCellValue(managementPortalInfo.getWorkingDate().toString());
-			    row.createCell(1).setCellValue(managementPortalInfo.getWorkingStartTime().toString().substring(0, 5));
-			    row.createCell(2).setCellValue(managementPortalInfo.getWorkingEndTime().toString().substring(0, 5));
-			    row.createCell(3).setCellValue(managementPortalInfo.getBreakTime());
-			    row.createCell(4).setCellValue(managementPortalInfo.getWorkingContents());
+		    	row.createCell(0).setCellValue(managementPortalInfo.getWorkingDate().toString());
+		    	row.createCell(1).setCellValue(managementPortalInfo.getWorkingStartTime().toString().substring(0, 5));
+		    	row.createCell(2).setCellValue(managementPortalInfo.getWorkingEndTime().toString().substring(0, 5));
+		    	row.createCell(3).setCellValue(managementPortalInfo.getBreakTime());
+		    	row.createCell(4).setCellValue(managementPortalInfo.getWorkingContents());
 		    }   
 		} catch ( Exception e ) {
-            e.printStackTrace();
-        }
+			e.printStackTrace();
+		}
 		return encodedFileName;
 	}
 	
