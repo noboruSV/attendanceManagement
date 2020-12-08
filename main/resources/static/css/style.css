@@ -1,4 +1,5 @@
-@CHARSET "UTF-8";
+@charset "UTF-8";
+
 .error-input {
 	background-color: #FFB6C1;
 }
@@ -6,3 +7,82 @@
 .error-message {
 	color: #FF0000;
 }
+
+//管理者画面用――開始
+
+div.managementPortal_div * {
+	margin-right: auto;
+	margin-left: auto;
+}
+div.managementPortal_submit_div {
+	text-align: center;
+	margin-right: auto;
+	margin-left: auto;
+}
+div.managementPortal_submit_div input {
+	margin: 0px 4px;
+}
+div.managementPortal_del_div * {
+	margin-right: auto;
+	margin-left: auto;
+}
+label.managementPortal_label {
+	display:block;
+	position:relative;
+	padding-left:2em;
+}
+label.managementPortal_label input[type="checkbox"] {
+	position:absolute;
+	top:0;
+	bottom:0;
+	left:0;
+	margin:auto;
+	vertical-align: middle;
+}
+th[id^="managementPortal_"] {
+	text-align: right;
+}
+#passwordGenerator, #restore {
+	width:30px;
+	height:20px;
+	font-size:1px;
+	text-decoration:none;
+	display:block;
+	text-align:center;
+	line-height:4px;
+	padding:8px 0 10px;
+	color:#000000;
+	opacity:0.5;
+	background-color:#6699CC;
+	border-radius:25px;
+	vertical-align: middle;
+}
+.toManagementPortal　{
+	position: fixed;
+	bottom: 10px;
+	right: 10px;
+	  
+	border:1px solid #888888;
+	padding:2pt;
+	background-color: #ffffff;
+	filter:alpha(opacity=85);
+	-moz-opacity:0.85;
+	-khtml-opacity: 0.85;
+	opacity:0.85;
+	     
+	text-shadow: 0 -1px 1px #FFF, -1px 0 1px #FFF, 1px 0 1px #aaa; 
+	-webkit-box-shadow: 1px 1px 2px #E7E7E7;
+	-moz-box-shadow: 1px 1px 2px #E7E7E7; 
+	-webkit-border-radius: 3px; 
+	-moz-border-radius: 3px;
+}
+p.errmsg {
+	color: #F00;
+	font-size: 15px;
+	text-align: center;
+}
+p.err {
+	color: #F00;
+}
+
+//管理者画面用――終了
