@@ -173,15 +173,15 @@ public class RegistrationController {
 			registrationInfoMethod.invoke(registrationInfo, time);
 		} catch (NoSuchMethodException e) {
 			e.printStackTrace();
-        } catch (SecurityException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        }
+		} catch (SecurityException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			e.printStackTrace();
+		}
 	}
 	/*
 	//TimeからStringへの変換メソッド(String型に変換し、サフィックスの:00を取り除いたあとでついでにモデルオブジェクトにセット)
@@ -207,15 +207,15 @@ public class RegistrationController {
 			registrationFormMethod.invoke(registrationForm, time.toString().substring(0, 5));
 		} catch (NoSuchMethodException e) {
 			e.printStackTrace();
-        } catch (SecurityException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        }
+		} catch (SecurityException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			e.printStackTrace();
+		}
 	}
 	
 }
