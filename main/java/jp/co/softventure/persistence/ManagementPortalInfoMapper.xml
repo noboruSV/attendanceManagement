@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC
+	"-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="jp.co.softventure.persistence.ManagementPortalInfoMapper">
+
+	<resultMap id = "getManagementPortalInfo" type = "jp.co.softventure.domain.ManagementPortalInfo">
+		<result property = "userName" column = "user_name"/>
+		<result property = "administrativeRight" column = "administrative_right"/>
+		<result property = "emailAddress" column = "email_address"/>
+		<result property = "employmentStatus" column = "employment_status"/>
+		<result property = "recRgstUser" column = "rec_regst_user"/>
+		<result property = "recRgstDt" column = "rec_rgst_dt"/>
+		<result property = "recUpdtUser" column = "rec_updt_user"/>
+		<result property = "recUpdtDt" column = "rec_updt_dt"/>
+		<result property = "workingDate" column = "working_date"/>
+		<result property = "workingStartTime" column = "working_start_time"/>
+		<result property = "workingEndTime" column = "working_end_time"/>
+		<result property = "breakTime" column = "break_time"/>
+		<result property = "workingContents" column = "working_contents"/>
+	</resultMap>
+	
+	<select id= "selectLoginData" resultMap = "getManagementPortalInfo">
+		SELECT * FROM login_data
+	</select>
+	
+	<select id= "selectUserData" resultMap = "getManagementPortalInfo">
+		SELECT * FROM login_data WHERE user_name = #{userName} OR id = #{id}
+	</select>
+	
+	<select id= "selectId" resultMap = "getManagementPortalInfo">
+		SELECT id FROM login_data ORDER BY id DESC LIMIT 1
+	</select>
+	
+	<select id= "selectWorkingReport" resultMap = "getManagementPortalInfo">
+		SELECT working_date, working_start_time, working_end_time, break_time, working_contents
+		FROM daily_report
+		INNER JOIN login_data
+		ON daily_report.id = login_data.id
+		WHERE daily_report.id = #{id}
+	</select>
+	
+	<insert id = "insertLoginData">
+		INSERT INTO login_data (user_name, id, password, administrative_right, email_address, rec_regst_user)
+		VALUES (#{userName}, #{id}, #{password}, #{administrativeRight}, #{emailAddress}, #{recRgstUser})
+	</insert>
+	
+	<update id="updateEmploymentStatus">
+		UPDATE login_data SET 
+			employment_status = #{employmentStatus},
+			rec_updt_dt = CASE WHEN #{employmentStatus} = '2'
+							   THEN CURRENT_TIMESTAMP()
+							   ELSE rec_updt_dt END
+		WHERE id = #{id}
+	</update>
+	
+	<update id="updateLoginData">
+		UPDATE 
+			login_data
+		SET 
+			user_name = #{userName}, 
+			id = #{id}, 
+			password = #{password}, 
+			email_address = #{emailAddress}, 
+			administrative_right = #{administrativeRight},
+			rec_updt_dt = CURRENT_TIMESTAMP(),
+			rec_updt_user = #{recUpdtUser}
+		WHERE 
+			id = #{id}
+	</update>
+	
+	<delete id="deleteUserData">
+		DELETE FROM login_data WHERE id = #{id}
+	</delete>
+	
+</mapper>
