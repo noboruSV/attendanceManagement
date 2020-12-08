@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="UTF-8">
 		<link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" />
-		<title>ƒƒOƒCƒ“‰æ–Ê</title>
+		<title>ãƒ­ã‚°ã‚¤ãƒ³ç”»é¢</title>
 		<style>
         body {
 /* 
@@ -25,12 +25,33 @@
 			margin-left:auto;
 			margin-right:auto;
 		}
+		
+		.toManagementPortal{
+ 			position: fixed;
+			bottom: 10px;
+ 			right: 10px;
+  
+ 			border:1px solid #888888;
+ 			padding:2pt;
+ 			background-color: #ffffff;
+ 			filter:alpha(opacity=85);
+ 			-moz-opacity:0.85;
+ 			-khtml-opacity: 0.85;
+ 			opacity:0.85;
+     
+ 			text-shadow: 0 -1px 1px #FFF, -1px 0 1px #FFF, 1px 0 1px #aaa; 
+ 			-webkit-box-shadow: 1px 1px 2px #E7E7E7;
+ 			-moz-box-shadow: 1px 1px 2px #E7E7E7; 
+ 			-webkit-border-radius: 3px; 
+ 			-moz-border-radius: 3px;
+		}
 
  	   </style>
 	</head>
 	<body>
-		<div class="container">
-			<form th:action="@{/login}" th:object="${loginForm}" method="post">
+		<form th:action="@{/login}" th:object="${loginForm}" method="post">
+			<div class="container">
+			
 				<br>
 				<br>
 				<br>
@@ -42,7 +63,7 @@
 					</tr>
 					<tr></tr>
 					<tr>
-						<td>ƒpƒXƒ[ƒh</td>
+						<td>ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰</td>
 						<td>:</td>
 						<td>
 					 		<input type="password" th:field="*{pw}" /><br />
@@ -50,17 +71,25 @@
 					</tr>
 				</table>
 				<br />
-				<input type="submit" name="jdg" value="ƒƒOƒCƒ“" />
+				<input type="submit" name="jdg" value="ãƒ­ã‚°ã‚¤ãƒ³" />
 				<div th:if="${#fields.hasErrors('all')}">
-	 				<p th:errors="*{all}" class="error-message">errorI</p>
+	 				<p th:errors="*{all}" class="error-message">errorï¼</p>
  				</div>
-			</form>
+			</div>
+			<input type="submit" name="toManagementPortal" class="toManagementPortal" value="ç®¡ç†è€…ç”»é¢" />
+		</form>
+		<div class="container"  th:switch="${loginForm.loginJdgFlg}">
+			<p th:case="2" class="error-message">ãƒ­ã‚°ã‚¤ãƒ³IDãŒå­˜åœ¨ã—ã¾ã›ã‚“ã€‚</p>
+			<p th:case="3" class="error-message">ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ãŒé•ã„ã¾ã™ã€‚</p>
+			<p th:case="4" class="error-message">ç®¡ç†è€…æ¨©é™ãŒã‚ã‚Šã¾ã›ã‚“ã€‚</p>
 		</div>
+		<!--
 		<div class="container"  th:if="${loginForm.loginJdgFlg eq 2}">
-			<p class="error-message">ƒƒOƒCƒ“ID‚ª‘¶İ‚µ‚Ü‚¹‚ñB</p>	
+			<p class="error-message">ãƒ­ã‚°ã‚¤ãƒ³IDãŒå­˜åœ¨ã—ã¾ã›ã‚“ã€‚</p>	
 		</div>
 		<div class="container" th:if="${loginForm.loginJdgFlg eq 3}">
-			<p class="error-message">ƒpƒXƒ[ƒh‚ªˆá‚¢‚Ü‚·B</p>	
+			<p class="error-message">ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ãŒé•ã„ã¾ã™ã€‚</p>	
 		</div>
+		-->
 	</body>
 </html>
