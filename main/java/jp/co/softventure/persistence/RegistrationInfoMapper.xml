@@ -7,18 +7,24 @@
 <mapper namespace="jp.co.softventure.persistence.RegistrationInfoMapper">
 
 	<insert id = "insert">
-		INSERT INTO daily_report (working_date, working_start_time, working_end_time, working_contents, shomu_sonota, shokan , id)
-		VALUES (#{workingDate},#{workingStartTime}, #{workingEndTime}, #{workingContents}, #{workingSonota}, #{shokan}, #{id})
+		INSERT INTO daily_report 
+			(working_date, working_start_time, working_end_time, break_time, working_contents, shomu_sonota, shokan, id, rec_regst_user)
+		VALUES 
+			(#{workingDate}, #{workingStartTime}, #{workingEndTime}, #{breakTime}, #{workingContents}, #{workingSonota}, #{shokan}, #{id}, #{recRgstUser})
 	</insert>
 	
 	<resultMap id = "getRegistrationInfo" type = "jp.co.softventure.domain.RegistrationInfo">
 		<result property = "workingStartTime" column = "working_start_time"/>
 		<result property = "workingEndTime" column = "working_end_time"/>
 		<result property = "workingDate" column = "working_date"/>
+		<result property = "breakTime" column = "break_time"/>
+		<result property = "workingContents" column = "working_contents"/>
+		<result property = "workingSonota" column = "shomu_sonota"/>
+		<result property = "shokan" column = "shokan"/>
 	</resultMap>
 	
 	<select id= "selectWorkingTime" resultMap = "getRegistrationInfo">
-		SELECT working_start_time, working_end_time FROM daily_report WHERE working_date = CURDATE() AND id = #{id}
+		SELECT * FROM daily_report WHERE working_date = CURDATE() AND id = #{id}
 	</select>
 	
 	<select id= "selectWorkingDate" resultMap = "getRegistrationInfo">
