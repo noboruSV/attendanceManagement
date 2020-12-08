@@ -19,6 +19,10 @@ public interface LoginDataMapper {
 	//更新
 //	public void update(LoginDto loginDto);
 	
+	public void updateAutoLogin(LoginData loginData);
+	
+	public List<LoginData> selectLoginDataByAutoLogin(LoginData loginData);
+	
 	//ログアウトページ用メソッド
 	public List<LoginData> selectUserName(LoginData loginData);
 }
