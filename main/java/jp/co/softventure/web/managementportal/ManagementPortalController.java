@@ -404,19 +404,19 @@ public class ManagementPortalController {
 	
 	//ふたつの日付を差分するメソッド
 	public String diffDates(Date date1,Date date2) {
-	    //削除猶予期間
+		//削除猶予期間
 		final int gracePeriod = 30;
 		long datetime1 = date1.getTime();
 		long datetime2 = date2.getTime();
 		long oneDateTime = 1000 * 60 * 60 * 24;
 		long diff = (datetime1 - datetime2) / oneDateTime;
 		String deletableDate;
-	    if ( diff >= gracePeriod ) {
-	    	deletableDate = "(削除可能)";
-	    } else {
-	    	deletableDate = "(あと" + String.valueOf(gracePeriod - diff) + "日で削除可能)";
-	    }
-	    return deletableDate;
+		if ( diff >= gracePeriod ) {
+			deletableDate = "(削除可能)";
+		} else {
+			deletableDate = "(あと" + String.valueOf(gracePeriod - diff) + "日で削除可能)";
+		}
+		return deletableDate;
 	}
 	
 	//アクセス認証チェック
