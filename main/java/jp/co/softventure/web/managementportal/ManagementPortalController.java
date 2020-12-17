@@ -407,10 +407,10 @@ public class ManagementPortalController {
 	    //削除猶予期間
 		final int gracePeriod = 30;
 		long datetime1 = date1.getTime();
-	    long datetime2 = date2.getTime();
-	    long oneDateTime = 1000 * 60 * 60 * 24;
-	    long diff = (datetime1 - datetime2) / oneDateTime;
-	    String deletableDate;
+		long datetime2 = date2.getTime();
+		long oneDateTime = 1000 * 60 * 60 * 24;
+		long diff = (datetime1 - datetime2) / oneDateTime;
+		String deletableDate;
 	    if ( diff >= gracePeriod ) {
 	    	deletableDate = "(削除可能)";
 	    } else {
