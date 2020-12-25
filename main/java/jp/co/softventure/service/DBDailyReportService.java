@@ -113,5 +113,29 @@ public class DBDailyReportService {
 				);
 		return ldate;
 	}
+
+	/**
+	 * 当日の出勤時刻と退勤時刻を取得
+	 * @param dailyReport
+	 * @return
+	 */
+	public List<DailyReport> searchToday(DailyReport dailyReport) {
+		List<DailyReport> list = mapper.selectToday(dailyReport);
+		return list;
+	}
+
+	//退勤時刻を設定
+	public void updateDailyReport(DailyReport dailyReport) {
+		mapper.updateEndTime(dailyReport);
+	}
 	
+	//作業時間を取得
+	public List<DailyReport> selectWorkingHour(DailyReport dailyReport) {
+		List<DailyReport> list = mapper.selectWorkingHour(dailyReport);
+		return list;
+	}
+	//作業時間を登録
+	public void updateWorkingTime(DailyReport dailyReport) {
+		mapper.updateEndTime(dailyReport);
+	}
 }

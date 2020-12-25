@@ -27,6 +27,15 @@ public interface DailyReportMapper {
 	
 	//更新
 	public void update(UpdateDailyReport updateDailyReport);
-
 	
+	//add n.matsu start 
+	//当日の出勤、退勤を取得
+	public List<DailyReport> selectToday(DailyReport dailyReport);
+	//作業終了時刻・作業時間を登録
+	public void updateEndTime(DailyReport dailyReport);
+	//勤務時間を取得(作業開始時刻 - 作業終了時刻)
+	public List<DailyReport> selectWorkingHour(DailyReport dailyReport);
+	//作業時間を登録
+	public void updateWorkingTime(DailyReport dailyReport);
+	//add n.matsu end	
 }

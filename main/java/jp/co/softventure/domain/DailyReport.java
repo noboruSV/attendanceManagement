@@ -18,11 +18,20 @@ public class DailyReport {
 	private String shokan;
 	//作業内容
 	private String workingContents;
+	//休憩時間
+	private String breakTime;
+	//レコード作成者
+	private String recRegstUser;
+	//レコード最終更新者
+	private String recUpdtUser;
 	//データ取得日付
 	private String working_date_s;
 	//データ取得日付
 	private String working_date_e;
-
+	//add n.matsu start
+	//勤務時間
+	private String workingHour;
+	//add n.matsu end
 	public String getId() {
 		return id;
 	}
@@ -71,6 +80,26 @@ public class DailyReport {
 	public void setWorkingEndTime(String workingEndTime) {
 		this.workingEndTime = workingEndTime;
 	}
+	public String getBreakTime() {
+		return breakTime;
+	}
+	public void setBreakTime(String break_time) {
+		this.breakTime = break_time;
+	}
+	
+	public String getRecRegstUser() {
+		return recRegstUser;
+	}
+	public void setRecRegstUser(String recRegstUser) {
+		this.recRegstUser = recRegstUser;
+	}
+	
+	public String getRecUpdtUser() {
+		return recUpdtUser;
+	}
+	public void setRecUpdtUser(String recUpdtUser) {
+		this.recUpdtUser = recUpdtUser;
+	}
 	public String getWorking_date_s() {
 		return working_date_s;
 	}
@@ -83,5 +112,12 @@ public class DailyReport {
 	public void setWorking_date_e(String working_date_e) {
 		this.working_date_e = working_date_e;
 	}
-	
+	//add n.matsu start
+	public String getWorkingHour() {
+		return workingHour;
+	}
+	public void setWorkingHour(String workingHour) {
+		this.workingHour = workingHour;
+	}
+	//add n.matsu end	
 }

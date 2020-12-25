@@ -1,4 +1,4 @@
-package jp.co.softventure.domain.dto;
+package jp.co.softventure.dto;
 
 public class WorkReportsListDto {
 	//年

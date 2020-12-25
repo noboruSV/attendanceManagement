@@ -5,7 +5,32 @@
 
 <mapper namespace="jp.co.softventure.persistence.DailyReportMapper">
 
-<!-- 	<insert id="insert">
+<!-- add n.matsu 退勤時刻を登録 start-->
+	<update id="updateEndTime" parameterType="jp.co.softventure.domain.DailyReport">
+		UPDATE daily_report
+		SET
+			id = #{id}
+			,working_date = #{workingDate}
+			,working_end_time = #{workingEndTime}
+			,rec_updt_user = #{id}
+		WHERE id = #{id}
+		AND working_date = #{workingDate}
+	</update>
+<!-- add n.matsu 退勤時間を登録 End-->
+
+<!-- 作業時間を登録 start-->	
+	<update id="updateWorkingTime" parameterType="jp.co.softventure.domain.DailyReport">
+		UPDATE daily_report
+		SET
+			id = #{id}
+			,working_time = #{workingTime}
+			,rec_updt_user = #{id}
+		WHERE id = #{id}
+		AND working_date = #{workingDate}
+	</update>
+<!-- 作業時間を登録 end-->	
+
+ 	<insert id="insert">
 		INSERT INTO daily_report(
 			id
 			,working_date
@@ -15,18 +40,24 @@
 			,working_contents
 			,shomu_sonota
 			,shokan
+			,break_time
+			,rec_regst_user
+			,rec_updt_user
 			)
 			VALUES (
 			#{id}
-			,#{working_date}
-			,#{working_time}
-			,#{working_start_time}
-			,#{working_end_time}
-			,#{working_contents}
-			,#{shomu_sonota}
+			,#{workingDate}
+			,#{workingTime}
+			,#{workingStartTime}
+			,#{workingEndTime}
+			,#{workingContents}
+			,#{shomuSonota}
 			,#{shokan}
+			,#{breakTime}
+			,#{recRegstUser}
+			,#{recUpdtUser}
 			)
-	</insert> -->
+	</insert>
 	
 <!--  	<resultMap id="getResuldDailyReport" type="jp.co.softventure.domain.DailyReport">
 		<result property="workingDate" column="working_date" />
@@ -37,6 +68,39 @@
 		<result property="shomuSonota" column="shomu_sonota" />
 	</resultMap> -->
 	<!--<select id="select" resultMap="getResuldDailyReport"> -->
+	
+	<!-- add start -->
+	<!-- 当日勤怠時刻取得 -->
+	<select id="selectToday" resultType="jp.co.softventure.domain.DailyReport">
+		SELECT
+			working_start_time
+			,working_end_time
+		FROM daily_report
+		<where>
+			<if test="id != ''">
+				id = #{id}
+			</if>
+			<if test="working_date_s != ''">
+				<![CDATA[ AND working_date = #{workingDate} ]]>
+			</if>
+		</where>
+	</select>
+	
+	<!-- 勤務時間を取得 -->
+		<select id="selectWorkingHour" resultType="jp.co.softventure.domain.DailyReport">
+		SELECT
+			working_end_time - working_start_time as workingHour
+		FROM daily_report
+		<where>
+			<if test="id != ''">
+				id = #{id}
+			</if>
+			<if test="working_date_s != ''">
+				<![CDATA[ AND working_date = #{workingDate} ]]>
+			</if>
+		</where>
+	</select>
+	<!-- add end -->
 	
 	<!-- 一覧表示用 -->
 	<select id="select" resultType="jp.co.softventure.domain.DailyReport">
@@ -49,7 +113,8 @@
 			,working_contents
 			,shomu_sonota
 			,shokan
-		 	FROM daily_report
+			,working_end_time - working_start_time as workingHour
+		FROM daily_report
 		<where>
 			<if test="id != ''">
 				id = #{id}
@@ -72,6 +137,10 @@
 		<result property="workingEndTime" column="working_end_time" />
 		<result property="workingContents" column="working_contents" />
 		<result property="shomuSonota" column="shomu_sonota" />
+		<result property="breakTime" column="break_time" />
+		<result property="recRegstUser" column="rec_regst_user" />
+		<result property="recUpdtUser" column="rec_updt_user" />
+		<result property="workingHour" column="working_hour" />
 	</resultMap>
 	
 	<!-- <select id="selectAttendance" resultMap="getResultDailyReport"> -->
