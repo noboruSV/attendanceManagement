@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import jp.co.softventure.domain.DailyReport;
 import jp.co.softventure.domain.UpdateDailyReport;
+import jp.co.softventure.dto.DailyReportDto;
 import jp.co.softventure.persistence.DailyReportMapper;
 /**
  * 
@@ -50,10 +51,12 @@ public class DBDailyReportService {
 		List<DailyReport> list = mapper.selectAttendance(dailyReport);
 		return list;
 	}
-//	public List<DailyReportDto> selectAttendance(DailyReportDto dto) {
-//		List<DailyReportDto> list = mapper.selectAttendance(dto);
-//		return list;
-//	}
+	
+	//
+	public List<DailyReportDto> selectDailyReportDto(DailyReportDto dto) {
+		List<DailyReportDto> list = mapper.selectDailyReportDto(dto);
+		return list;
+	}
 
 	/**
 	 * 更新処理
@@ -125,13 +128,13 @@ public class DBDailyReportService {
 	}
 
 	//退勤時刻を設定
-	public void updateDailyReport(DailyReport dailyReport) {
+	public void updateWorkEndTime(DailyReport dailyReport) {
 		mapper.updateEndTime(dailyReport);
 	}
 	
 	//作業時間を取得
-	public List<DailyReport> selectWorkingHour(DailyReport dailyReport) {
-		List<DailyReport> list = mapper.selectWorkingHour(dailyReport);
+	public List<DailyReportDto> selectWorkingHour(DailyReport dailyReport) {
+		List<DailyReportDto> list = mapper.selectWorkingHour(dailyReport);
 		return list;
 	}
 	//作業時間を登録

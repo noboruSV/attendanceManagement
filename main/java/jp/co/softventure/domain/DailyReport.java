@@ -28,10 +28,8 @@ public class DailyReport {
 	private String working_date_s;
 	//データ取得日付
 	private String working_date_e;
-	//add n.matsu start
 	//勤務時間
 	private String workingHour;
-	//add n.matsu end
 	public String getId() {
 		return id;
 	}
@@ -112,12 +110,10 @@ public class DailyReport {
 	public void setWorking_date_e(String working_date_e) {
 		this.working_date_e = working_date_e;
 	}
-	//add n.matsu start
 	public String getWorkingHour() {
 		return workingHour;
 	}
 	public void setWorkingHour(String workingHour) {
 		this.workingHour = workingHour;
 	}
-	//add n.matsu end	
 }

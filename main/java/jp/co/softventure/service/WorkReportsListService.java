@@ -4,20 +4,19 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.thymeleaf.util.StringUtils;
 
 import jp.co.softventure.domain.DailyReport;
 import jp.co.softventure.domain.UpdateDailyReport;
-
+import jp.co.softventure.dto.DailyReportDto;
 import jp.co.softventure.dto.WorkReportsListDto;
 import jp.co.softventure.model.LoginDataInfo;
 import jp.co.softventure.persistence.DailyReportMapper;
@@ -74,8 +73,7 @@ public class WorkReportsListService {
 		
 		return str;
 	}
-	
-	
+
 	/**
 	 * daily_reportを取得する
 	 * @param wrlForm
@@ -87,8 +85,8 @@ public class WorkReportsListService {
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMM");
 		
-		Date dateS = new Date();
-		Date dateE = new Date();
+		java.util.Date dateS = new java.util.Date();
+		java.util.Date dateE = new java.util.Date();
 		
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(dateE);;
@@ -96,7 +94,6 @@ public class WorkReportsListService {
 		dateE = calendar.getTime();
 		
 		DailyReport dailyReport = new DailyReport();
-//		BeanUtils.copyProperties(wrlForm, dailyReport);
 		dailyReport.setId(id);
 		dailyReport.setWorking_date_s(sdf.format(dateS).concat("01"));
 		dailyReport.setWorking_date_e(sdf.format(dateE).concat("01"));
@@ -106,13 +103,31 @@ public class WorkReportsListService {
 		return list;
 	}
 	
+	//daily_reportを取得
+	public List<DailyReportDto> selectDailyReportTest (String id) {
+
+		LocalDate localDate = LocalDate.now();
+		Calendar cal = Calendar.getInstance();
+		cal.set(Calendar.YEAR, localDate.getYear());
+		int lastDayOfMonth = cal.getActualMaximum(Calendar.DATE);
+		
+		Date startDate = Date.valueOf(localDate);
+		startDate = Date.valueOf(LocalDate.of(localDate.getYear(), localDate.getMonthValue(), 1));
+		Date endDate = Date.valueOf(localDate);
+		endDate = Date.valueOf(LocalDate.of(localDate.getYear(), localDate.getMonthValue(), lastDayOfMonth));
+
+		DailyReportDto dto = new DailyReportDto();
+		dto.setId(id);
+		dto.setWorkDateStart(startDate);
+		dto.setWorkDateEnd(endDate);
+		List<DailyReportDto> list = dBDailyReportService.selectDailyReportDto(dto);
+		return list;
+	}
 	
 	/**
 	 * 曜日取得
 	 * @param ymd(yyyy-MM-dd形式)
 	 * @return
-	 */
-	/**
 	 */
 	public String getYobi(String ymd){
 		try{
@@ -143,7 +158,7 @@ public class WorkReportsListService {
 	
 
 	/**
-	 * 取得した値をDtoにセット
+	 * 取得した値をWorkReportsListDtoにセット
 	 * @param list
 	 * @return
 	 */
@@ -172,68 +187,46 @@ public class WorkReportsListService {
 					//終了時間
 					String end = endTime(list.get(j).getWorkingEndTime().substring(0, 5));
 					dto.setWorkingEndTime(end);
-					//勤務時間
-					String dutyS = list.get(j).getWorkingDate()+start;
-					String dutyE = list.get(j).getWorkingDate()+end;
-					BigDecimal dutyTime = getDutyTime(dutyS,dutyE);
-					dto.setDutyTime(dutyTime.toString()); 
-					//otameshi
-//					BigDecimal dutyTime = null;
-//					String dutyTimes = getWorkingHour(list.get(j).getWorkingHour());
-//					dto.setDutyTime(dutyTimes);
-					//otameshi
+					//勤務時間 ※終了時間-開始時間
+					String dutyTime = getWorkingHour(list.get(j).getWorkingHour());
+					dto.setDutyTime(dutyTime);
 					//休憩時間
-					BigDecimal breakTime = getBreakTime(dutyTime);
-					dto.setBreakTime(String.valueOf(breakTime));
+					dto.setBreakTime(chkBreakTime(list.get(j).getBreakTime()));
 					//作業時間
-					BigDecimal workTime = dutyTime.subtract(breakTime);
-					dto.setWorkTime(String.valueOf(workTime));
+					dto.setWorkTime(chkWorkTime(list.get(j).getWorkingTime()));
 				}
 			}
 			wrlDto.add(dto);
 		}
-		
-		
-//いったんコメントアウト
-//		for(int i=0; i < list.size(); i++) {
-////			List<WorkReportsListDto>dto2 = new ArrayList<>();
-//			//DBから取得した日付が画面日付と同じ場合セット
-//			int value = Integer.parseInt(list.get(i).getWorkingDate().substring(8, 10))-1;
-//			if (StringUtils.equals(wrlDto.get(value).getDate(), list.get(i).getWorkingDate().substring(8, 10))) {
-////				WorkReportsListDto dto = new WorkReportsListDto();
-//				//年
-//				dto.setYear(list.get(i).getWorkingDate().substring(0, 4));
-//				//日付
-//				//dto.setDate(list.get(i).getWorkingDate().substring(5, 10));
-//				//曜日
-//				//dto.setWeek(getYobi(list.get(i).getWorkingDate()));
-//				//作業内容
-//				dto.setWorkingContents(list.get(i).getWorkingContents());
-//				//開始時間
-//				String start = list.get(i).getWorkingStartTime().substring(0, 5);
-//				dto.setWorkingStartTime(start);
-//				//終了時間
-//				String end = list.get(i).getWorkingEndTime().substring(0, 5);
-//				dto.setWorkingEndTime(end);
-//				//勤務時間
-//				String dutyS = list.get(i).getWorkingDate()+start;
-//				String dutyE = list.get(i).getWorkingDate()+end;
-//				
-//				BigDecimal dutyTime = getDutyTime(dutyS,dutyE);
-//				dto.setDutyTime(dutyTime.toString()); 
-//				//休憩時間
-//				BigDecimal breakTime = getBreakTime(dutyTime);
-//				dto.setBreakTime(String.valueOf(breakTime));
-//				//作業時間
-//				BigDecimal workTime = dutyTime.subtract(breakTime);
-//				dto.setWorkTime(String.valueOf(workTime));
-////				wrlDto.set(value, dto);
-//				wrlDto.add(dto);
-//			}
-//		}
-//いったんコメントアウト
 		return wrlDto;
 	}
+	
+	/**
+	 * 作業時間の値変換
+	 * @param workTime
+	 * @return
+	 */
+	private String chkWorkTime(String workTime) {
+		if (workTime == null || StringUtils.isEmptyOrWhitespace(workTime) 
+				|| StringUtils.equals("00:00:00", workTime)) {
+			workTime = "";
+		}
+		return workTime;
+	}
+
+
+	/**
+	 * 休憩時間を変換
+	 * @param breakTime
+	 * @return
+	 */
+	private String chkBreakTime(String breakTime) {
+		if (breakTime == null || breakTime == "00") {
+			breakTime = "";
+		}
+		return breakTime;
+	}
+
 	/**
 	 * 
 	 * @param endTime
@@ -245,7 +238,6 @@ public class WorkReportsListService {
 		}
 		return endTime;
 	}
-
 
 	/**
 	 * 勤務時間を取得
@@ -317,18 +309,18 @@ public class WorkReportsListService {
 	public BigDecimal getBreakTime(BigDecimal dutyTime) {
 		BigDecimal seven = new BigDecimal(7);
 		BigDecimal nine = new BigDecimal(9);
-//		BigDecimal breakTime = new BigDecimal(45);
+		//BigDecimal breakTime = new BigDecimal(45);
 		BigDecimal breakTime = new BigDecimal(0.75);
 		
-//		勤務時間が7時間以内	なし
-//		勤務時間が7～9時間	45分以上
-//		勤務時間が9時間以上	60分以上 
+		//勤務時間が7時間以内	なし
+		//勤務時間が7～9時間	45分以上
+		//勤務時間が9時間以上	60分以上 
 		
 		if (dutyTime.compareTo(seven)>0) {
 			if (dutyTime.compareTo(nine)<0) {
 				return breakTime ;
 			}
-//			return breakTime = new BigDecimal(60);
+			//return breakTime = new BigDecimal(60);
 			return breakTime = new BigDecimal(1.00);
 		}else{
 			return breakTime = new BigDecimal(0);
@@ -466,8 +458,10 @@ public class WorkReportsListService {
 		List<DailyReport> list = selectTodayInfo(dateTime, user);
 		//データが存在する場合、かつ"00:00:00"の場合
 		if (list.size() > 0 && StringUtils.equals("00:00:00", list.get(0).getWorkingEndTime())) {
-			//出勤時間を登録
-			update(user, dateTime);
+			//退勤時間を登録
+			updWorkEndTime(user, dateTime);
+			//作業時間を登録
+			updateWorkTime(dateTime, user);
 			workReportsListForm.setWorkingEndTime(getNowTime(dateTime));
 		}
 	}
@@ -556,7 +550,7 @@ public class WorkReportsListService {
 	 * @param date
 	 * @param workStartTime
 	 */
-	public void update(String user, LocalDateTime dateTime) {
+	public void updWorkEndTime(String user, LocalDateTime dateTime) {
 		DailyReport dailyReport = new DailyReport();
 		setInitDailyReport(dailyReport);
 		DateTimeFormatter fmtYmd = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -569,9 +563,7 @@ public class WorkReportsListService {
 		//作業終了時刻
 		dailyReport.setWorkingEndTime(dateTime.format(fmtHms));
 		dailyReport.setRecUpdtUser(user);
-		dBDailyReportService.updateDailyReport(dailyReport);
-		//作業時間を登録
-		updateWorkTime(dateTime, user);
+		dBDailyReportService.updateWorkEndTime(dailyReport);
 	}
 	
 	//作業時間を登録
@@ -582,9 +574,14 @@ public class WorkReportsListService {
 
 		dailyReport.setId(user);
 		dailyReport.setWorkingDate(dateTime.format(formatter));
-		//勤務時間を取得（作業終了時間-作業開始時間）
-		List<DailyReport> list = dBDailyReportService.selectWorkingHour(dailyReport);
-		String workingHour = list.get(0).getWorkingHour();
+		//勤務時間を取得（作業開始時間と作業終了時間）
+		List<DailyReportDto> list = dBDailyReportService.selectWorkingHour(dailyReport);
+		//変数.workingHour （作業終了時間-作業開始時間）
+		String workingHour = getWorkHour(list.get(0).getWorkingStartTime(), list.get(0).getWorkingEndTime());
+		//変数.workingTime (変数.workingHour - BreakTime)
+		Time workTime = Time.valueOf(workingHour);
+		Time breakTime = Time.valueOf(list.get(0).getBreakTime());
+		String workingTime = getWorkTime(workTime, breakTime).toString();
 		if (workingHour.length() > 2) {
 			//秒以下を切り捨て
 			workingHour = workingHour.substring(0, 3);
@@ -593,20 +590,23 @@ public class WorkReportsListService {
 		}
 		
 		//作業時間を登録
-		dailyReport.setWorkingHour(workingHour);
+		dailyReport.setWorkingTime(workingHour);
 		dailyReport.setRecUpdtUser(user);
 		dBDailyReportService.updateWorkingTime(dailyReport);
 	}
 	
 	//勤務時間を設定
+//	private String getWorkingHour(String workingHour) {
+//		if (!StringUtils.isEmptyOrWhitespace(workingHour) && Integer.valueOf(workingHour) > 0 
+//				&& workingHour.length() > 2) {
+//			//秒以下を切り捨て
+//			workingHour = workingHour.substring(0, 3);
+//		} else {
+//			workingHour = "";
+//		}
+//		return workingHour;
+//	}
 	private String getWorkingHour(String workingHour) {
-		if (!StringUtils.isEmptyOrWhitespace(workingHour) && Integer.valueOf(workingHour) > 0 
-				&& workingHour.length() > 2) {
-			//秒以下を切り捨て
-			workingHour = workingHour.substring(0, 3);
-		} else {
-			workingHour = "0";
-		}
 		return workingHour;
 	}
 	/**
@@ -632,5 +632,137 @@ public class WorkReportsListService {
 	public void setWorkReportsListForm(WorkReportsListForm workReportsListForm, String user) {
 		workReportsListForm = getTodayInfo(workReportsListForm, user);
 	}
+	
+	//勤務開始時間と勤務終了時間を15分単位でまとめる
+	private String roundMinutes(String minutes) {
+		
+		return null;
+	}
+	
+	/**
+	 * 取得した値をWorkReportsListDtoにセット
+	 * @param list
+	 * @return
+	 */
+	public List <WorkReportsListDto> setWorkReportsListDto2(List<DailyReportDto> list) {
+		List<WorkReportsListDto> wrlDto = new ArrayList<>();
+		//カレンダーをセット
+		LocalDate localDate = LocalDate.now();
+		Calendar calendar = Calendar.getInstance();
+		int year = localDate.getYear();
+		int month = localDate.getMonthValue();
+		int lastDate = localDate.lengthOfMonth();
+		calendar.set(year, month, 1);
 
+		//画面表示様の日付と曜日を設定
+		for (int day=1; day<=lastDate; day++) {
+			WorkReportsListDto workReportsListDto = new WorkReportsListDto();
+			//日付
+			workReportsListDto.setDate(String.valueOf(day));
+			//曜日
+			workReportsListDto.setWeek(getWeek(calendar, year, month, day));
+			//画面表示日付と同日のデータが存在する場合、画面項目を設定
+			for(int j=0; j < list.size(); j++) {
+				if (StringUtils.equals(workReportsListDto.getDate(), workDateToString(list.get(j).getWorkingDate()))) {
+					//作業内容
+					workReportsListDto.setWorkingContents(list.get(j).getWorkingContents());
+					//開始時間
+					String start = timeToString(list.get(j).getWorkingStartTime());
+					workReportsListDto.setWorkingStartTime(start);
+					//終了時間
+					String end = timeToString(list.get(j).getWorkingEndTime());
+					workReportsListDto.setWorkingEndTime(end);
+					//勤務時間 ※終了時間-開始時間
+					String dutyTime = getWorkHour(list.get(j).getWorkingStartTime(),list.get(j).getWorkingEndTime());
+					workReportsListDto.setDutyTime(dutyTime);
+					//休憩時間
+					workReportsListDto.setBreakTime(chkBreakTime(list.get(j).getBreakTime()));
+					//作業時間
+					workReportsListDto.setWorkTime(String.valueOf(list.get(j).getWorkingTime()));
+					//otameshi
+				}
+			}
+			wrlDto.add(workReportsListDto);
+		}
+		return wrlDto;
+	}
+	
+
+	//勤務時間(作業開始時間-作業終了時間)を取得
+	private String getWorkHour(Time workingStartTime, Time workingEndTime) {
+		SimpleDateFormat fmtHour = new SimpleDateFormat("HH");
+		SimpleDateFormat fmtMin = new SimpleDateFormat("mm");
+
+		int startHour = Integer.valueOf(fmtHour.format(workingStartTime));
+		int startMin = Integer.valueOf(fmtMin.format(workingStartTime));
+		int endHour = Integer.valueOf(fmtHour.format(workingEndTime));
+		int endMin = Integer.valueOf(fmtHour.format(workingEndTime));
+
+		LocalTime sTime = LocalTime.of(startHour, startMin);
+		sTime = marumeTime(sTime);
+		LocalTime eTime = LocalTime.of(endHour, endMin);
+		eTime = marumeTime(eTime);
+		long minutes = ChronoUnit.MINUTES.between(sTime, eTime);
+		return String.valueOf(minutes);
+	}
+	
+	//勤務時間-休憩時間
+	private Time getWorkTime(Time workTime, Time breakTime) {
+		SimpleDateFormat fmtHour = new SimpleDateFormat("HH");
+		SimpleDateFormat fmtMin = new SimpleDateFormat("mm");
+
+		int startHour = Integer.valueOf(fmtHour.format(workTime));
+		int startMin = Integer.valueOf(fmtMin.format(workTime));
+		int endHour = Integer.valueOf(fmtHour.format(breakTime));
+		int endMin = Integer.valueOf(fmtHour.format(breakTime));
+
+		LocalTime wTime = LocalTime.of(startHour, startMin);
+		wTime = marumeTime(wTime);
+		LocalTime bTime = LocalTime.of(endHour, endMin);
+		bTime = marumeTime(bTime);
+		long minutes = ChronoUnit.MINUTES.between(wTime, bTime);
+		return Time.valueOf(String.valueOf(minutes));
+	}
+
+	//15分で丸める
+	private LocalTime marumeTime(LocalTime time) {
+		//1~15分→15分
+		if (time.getMinute() > 0 && time.getMinute() < 16) {
+			return LocalTime.of(time.getHour(), 15);
+		}
+		//16~30分→30分
+		else if (time.getMinute() > 15 && time.getMinute() < 31) {
+			return LocalTime.of(time.getHour(), 30);
+		}
+		//31~45分→45分
+		else if (time.getMinute() > 30 && time.getMinute() < 46) {
+			return LocalTime.of(time.getHour(), 45);
+		}
+		//46~00分→00分
+		else if (time.getMinute() > 45 && time.getMinute() == 00) {
+			return LocalTime.of(time.getHour(), 00);
+		}
+		return time;
+	}
+
+
+	private String timeToString(Time time) {
+		String strTime = "";
+		if(time == null) {
+			return "";
+		} else if (StringUtils.equals("00:00:00", String.valueOf(time))) {
+			return "";
+		} else {
+			strTime = String.valueOf(time);
+			strTime = strTime.substring(0, 5);
+		}
+		return strTime;
+	}
+
+
+	private String workDateToString(Date workingDate) {
+		SimpleDateFormat sdf = new SimpleDateFormat("d");
+		return sdf.format(workingDate.getTime());
+	}
+	
 }

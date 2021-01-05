@@ -3,24 +3,35 @@
 <html xmlns:th="http://www.thymeleaf.org">
 	<head>
 		<meta charset="UTF-8">
-		<title>日報一覧表</title>
+		<title>日報一覧</title>
 		<style type="text/css">
-		.result{
-			width:1300px;
+			.result{
+				width:1300px;
+			}
 			
-		}
-		
-		body{
-		  text-align: center;
-		
-		}
-		table{
-		  border-collapse:collapse;
-		}
-		
-		table tr th:nth-of-type(-n + 7) {
-			background-color: #87cefa;
-		}
+			body{
+			  text-align: center;
+			}
+	
+			table{
+			  border-collapse:collapse;
+			}
+			
+			table tr th:nth-of-type(-n + 7) {
+				background-color: #87cefa;
+			}
+			#title{
+				width:500px;
+				font-size:24px;
+				font-weight:bold;
+			}
+			#title input{
+				border: none;
+				outline: none;
+				font-size:24px;
+				text-align:right;
+				font-weight:bold;
+			}
 		</style>
 	</head>
 	<body>
@@ -28,6 +39,40 @@
 			<!-- 管理者画面からアクセスした場合に表示  -->
 			<p th:text="${userName}"></p>
 			<form th:action="@{/workreportslist/workReportsList}" th:object="${workReportsListForm}" method="post" >
+				<div id="title">
+					<p>
+						<input type="text" th:value="*{year}" readonly style="width: 80px"/>年
+						<input type="text" th:value="*{month}" readonly style="width: 35px"/>月 勤務表
+					</p>
+				</div>
+				<table>
+ 					<tr>
+						<td>
+							<input type="text" th:value="*{workingStartTime}">
+						</td>
+						<td><input type="submit" name="btnWorkStart" value="出勤"></td>
+						<td>
+							<input type="text" th:value="*{workingEndTime}">
+						</td>
+						<td><input type="submit" name="btnWorkEnd" value="退勤"></td>
+					</tr>
+					<tr>
+<!--					
+						<td>
+							<input type="submit" th:name="insert" value="登録" />
+						</td>
+						<td>
+							<input type="submit" th:name="update" value="更新" />
+						</td>
+-->
+  						<td>
+							<input type="submit" th:name="logout" value="ログアウト" />
+						</td>
+						<td>
+							<input type="submit" th:name="download" value="ダウンロード" />
+						</td>
+					</tr>
+				</table>
 				<div class="result" >
 					<table border="1" >
 						<thead>
@@ -44,7 +89,7 @@
 						<tbody>
 							<tr th:each="listResult : *{dailyReportResult}">
 		 						<td>
-									<input type="text" th:value="${listResult.date} + ${listResult.week}" readonly style="border:none"/>
+ 									<input type="text" th:value="${listResult.date} + ${listResult.week}" readonly style="border:none"/>
 								</td>
 								<td>
 									<input type="text"  th:value="${listResult.workingContents}" readonly style="border:none"/>
@@ -68,22 +113,7 @@
 						</tbody>
 					</table>
 				</div>
-				<table>
-					<tr>
-						<td>
-							<input type="submit" th:name="insert" value="登録" />
-						</td>
-						<td>
-							<input type="submit" th:name="update" value="更新" />
-						</td>
-						<td>
-							<input type="submit" th:name="logout" value="ログアウト" />
-						</td>
-						<td>
-							<input type="submit" th:name="download" value="ダウンロード" />
-						</td>
-					</tr>
-				</table>
+
 			</form>
 		</div>
 		<script type="text/javascript" src="workReportsList.js"></script>
